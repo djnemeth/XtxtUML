@@ -33,8 +33,7 @@ public class RuntimeLibraryContainer implements IClasspathContainer {
 			"hu.elte.txtuml.api.diagnostics", "hu.elte.txtuml.export.papyrus", //$NON-NLS-1$ //$NON-NLS-2$
 			"hu.elte.txtuml.export.uml2", "hu.elte.txtuml.layout.export", //$NON-NLS-1$ //$NON-NLS-2$
 			"hu.elte.txtuml.layout.visualizer", "hu.elte.txtuml.utils", //$NON-NLS-1$ //$NON-NLS-2$
-			"hu.elte.txtuml.xtxtuml.lib", "hu.elte.txtuml.xtxtuml", //$NON-NLS-1$ //$NON-NLS-2$
-			"hu.elte.txtuml.xtxtuml.ui" }; //$NON-NLS-1$
+			"hu.elte.txtuml.xtxtuml", "hu.elte.txtuml.xtxtuml.ui" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	private final IPath containerPath;
 	private IClasspathEntry[] classPathEntries;
