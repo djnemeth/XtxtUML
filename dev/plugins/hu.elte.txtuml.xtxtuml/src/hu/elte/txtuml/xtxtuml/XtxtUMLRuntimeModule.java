@@ -4,7 +4,6 @@ import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.linking.ILinkingDiagnosticMessageProvider;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
-import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler;
 import org.eclipse.xtext.xbase.imports.ImportedTypesCollector;
 import org.eclipse.xtext.xbase.imports.RewritableImportSection;
@@ -28,7 +27,6 @@ import hu.elte.txtuml.xtxtuml.scoping.XtxtUMLXImportSectionNamespaceScopeProvide
 import hu.elte.txtuml.xtxtuml.typesystem.XtxtUMLEarlyExitComputer;
 import hu.elte.txtuml.xtxtuml.typesystem.XtxtUMLReentrantTypeResolver;
 import hu.elte.txtuml.xtxtuml.typesystem.XtxtUMLTypeComputer;
-import hu.elte.txtuml.xtxtuml.validation.XtxtUMLConfigurableIssueCodes;
 import hu.elte.txtuml.xtxtuml.validation.XtxtUMLExpressionHelper;
 import hu.elte.txtuml.xtxtuml.validation.XtxtUMLLinkingDiagnosticMessageProvider;
 
@@ -74,11 +72,6 @@ public class XtxtUMLRuntimeModule extends AbstractXtxtUMLRuntimeModule {
 
 	public Class<? extends XExpressionHelper> bindXExpressionHelper() {
 		return XtxtUMLExpressionHelper.class;
-	}
-
-	@Override
-	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
-		return XtxtUMLConfigurableIssueCodes.class;
 	}
 
 	public Class<? extends ImportedTypesCollector> bindImportedTypesCollector() {

@@ -73,9 +73,4 @@ class XtxtUMLIssueCodes {
 	public static val INCOMPATIBLE_PORTS = ISSUE_CODE_PREFIX + "incompatible_ports";
 	public static val NOT_OWNED_PORT = ISSUE_CODE_PREFIX + "not_owned_port";
 
-	/**
-	 * Used by {@link XtxtUMLDerivedResourceMarkerCopier} to propagate JtxtUML validation errors to XtxtUML source.
-	 */
-	public static val COPY_JTXTUML_PROBLEMS = ISSUE_CODE_PREFIX + "copy_jtxtuml_problems";
-
 }
