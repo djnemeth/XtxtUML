@@ -24,6 +24,8 @@ import static hu.elte.txtuml.xtxtuml.xtxtUML.XtxtUMLPackage.Literals.*
 
 class XtxtUMLTypeValidator extends XtxtUMLUniquenessValidator {
 
+	static val allowedBasicTypes = #[Integer.TYPE, Integer, Boolean.TYPE, Boolean, Double.TYPE, Double, String];
+
 	@Check
 	def checkTypeReference(JvmTypeReference typeRef) {
 		var isAttribute = false;
@@ -51,9 +53,9 @@ class XtxtUMLTypeValidator extends XtxtUMLUniquenessValidator {
 		if (!isValid) {
 			error(
 				if (isAttribute) {
-					"Invalid type. Only boolean, double, int, String, model data types and external interfaces are allowed."
+					"Invalid type. Only boolean, Boolean, double, Double, int, Integer, String, model data types and external interfaces are allowed"
 				} else {
-					"Invalid type. Only boolean, double, int, String, model data types, external interfaces and model class types are allowed."
+					"Invalid type. Only boolean, Boolean, double, Double, int, Integer, String, model data types, external interfaces and model class types are allowed"
 				}, typeRef, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE, INVALID_TYPE);
 		}
 	}
@@ -93,8 +95,7 @@ class XtxtUMLTypeValidator extends XtxtUMLUniquenessValidator {
 	}
 
 	def protected isAllowedBasicType(JvmTypeReference typeRef, boolean isVoidAllowed) {
-		typeRef.isType(Integer.TYPE) || typeRef.isType(Boolean.TYPE) || typeRef.isType(Double.TYPE) ||
-			typeRef.isType(String) || typeRef.isType(Void.TYPE) && isVoidAllowed
+		allowedBasicTypes.exists[typeRef.isType(it)] || typeRef.isType(Void.TYPE) && isVoidAllowed
 	}
 
 	def protected isType(JvmTypeReference typeRef, Class<?> expectedType) {
