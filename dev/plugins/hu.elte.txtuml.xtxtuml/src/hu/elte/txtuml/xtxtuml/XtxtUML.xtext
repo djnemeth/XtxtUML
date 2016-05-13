@@ -516,8 +516,9 @@ XMemberFeatureCall returns xbase::XExpression :
 			)? ')'
 		)?
 	| 
-		=>({XUClassPropertyAccessExpression.left=current} '->') '('
-			right=[XUClassProperty|QualifiedName]
+		=>({XUClassPropertyAccessExpression.left=current} arrow='->') '('
+			// feature 'arrow' is for error markers
+			right=[XUClassProperty|QualifiedName]?
 		')'
 	)*
 ;

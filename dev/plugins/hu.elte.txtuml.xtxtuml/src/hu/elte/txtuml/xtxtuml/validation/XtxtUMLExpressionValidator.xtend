@@ -132,7 +132,19 @@ class XtxtUMLExpressionValidator extends XtxtUMLTypeValidator {
 	}
 
 	@Check
+	def checkAccessedClassPropertyIsSpecified(XUClassPropertyAccessExpression propAccessExpr) {
+		if (propAccessExpr.right == null) {
+			error("The accessed class property cannot be null", propAccessExpr,
+				XU_CLASS_PROPERTY_ACCESS_EXPRESSION__ARROW, MISSING_CLASS_PROPERTY);
+		}
+	}
+
+	@Check
 	def checkOwnerOfAccessedClassProperty(XUClassPropertyAccessExpression propAccessExpr) {
+		if (propAccessExpr.right == null) {
+			return;
+		}
+
 		val leftSourceElement = propAccessExpr.left.actualType.type.primarySourceElement;
 		if (!(leftSourceElement instanceof XUClass)) {
 			return; // typechecks will mark it
