@@ -13,10 +13,10 @@ class XtxtUMLFileValidator extends XtxtUMLExpressionValidator {
 
 	@Check
 	def checkModelDeclarationIsInModelInfoFile(XUModelDeclaration modelDeclaration) {
-		var name = modelDeclaration.eResource?.URI?.lastSegment ?: "";
-		if (name != "model-info.xtxtuml") {
-			error('Model declaration must be specified in "model-info.xtxtuml"', modelDeclaration,
-				XU_MODEL_DECLARATION__MODEL, MISPLACED_MODEL_DECLARATION);
+		var name = modelDeclaration.eResource?.URI?.trimFileExtension?.lastSegment ?: "";
+		if (name != "model-info") {
+			error("Model declaration must be specified in 'model-info.xtxtuml' or 'model-info.txtuml'",
+				modelDeclaration, XU_MODEL_DECLARATION__MODEL, MISPLACED_MODEL_DECLARATION);
 		}
 	}
 
