@@ -7,71 +7,72 @@ import "http://www.eclipse.org/xtext/xbase/Xtype" as xtype
 
 // Start rule
 
-TUFile :
-	TUModelDeclaration |
-	('package' name=QualifiedName ';'?
-	importSection=XImportSection?
-	elements+=TUModelElement*)
+XUFile :
+	XUModelDeclaration | (
+		'package' name=QualifiedName ';'
+		importSection=XImportSection?
+		elements+=XUModelElement*
+	)
 ;
 
-TUModelDeclaration :
-	{TUModelDeclaration}
-	model='model-package' name=QualifiedName ('as' modelName=STRING)? semiColon=';'?
+XUModelDeclaration :
+	{XUModelDeclaration}
+	model='model-package' name=QualifiedName ('as' modelName=STRING)? semiColon=';'
 		// feature 'semiColon' is required because of the buggy formatter2 API
 ;
 
 // Model level
 
-TUModelElement
-	: TUExecution
-	| TUSignal
-	| TUClass
-	| TUAssociation
-	| TUInterface
-	| TUConnector
+XUModelElement
+	: XUExecution
+	| XUSignal
+	| XUClass
+	| XUAssociation
+	| XUInterface
+	| XUConnector
 ;
 
-TUExecution :
+XUExecution :
 	'execution' name=ValidID
 		body=XBlockExpression ';'?
 ;
 
-TUSignal :
+XUSignal :
 	'signal' name=ValidID ('{'
-		attributes+=TUSignalAttribute*
+		attributes+=XUSignalAttribute*
 	'}' ';'? | ';')
 ;
 
-TUClass : 
-	'class' name=ValidID ('extends' superClass=[TUClass|QualifiedName])? ('{'
-		members+=TUClassMember*
+XUClass : 
+	'class' name=ValidID ('extends' superClass=[XUClass|QualifiedName])? ('{'
+		members+=XUClassMember*
 	'}' ';'? | ';')
 ;
 
-TUAssociation returns TUAssociation:
-	({TUAssociation} 'association' | {TUComposition} 'composition') name=ValidID '{'
-		ends+=TUAssociationEnd*
+XUAssociation returns XUAssociation:
+	({XUAssociation} 'association' | {XUComposition} 'composition') name=ValidID '{'
+		ends+=XUAssociationEnd*
 	'}' ';'?
 ;
 
-TUInterface :
+XUInterface :
 	'interface' name=ValidID '{'
-		receptions+=TUReception*
+		receptions+=XUReception*
 	'}' ';'?
 ;
 
-TUReception :
-	'reception' signal=[TUSignal|QualifiedName] ';'
+XUReception :
+	'reception' signal=[XUSignal|QualifiedName] ';'
 ;
 
-TUConnector :
+XUConnector :
 	('connector' | delegation?='delegation') name=ValidID '{'
-		ends+=TUConnectorEnd*
+		ends+=XUConnectorEnd*
 	'}' ';'?
 ;
 
-TUConnectorEnd :
-	role=[TUAssociationEnd|QualifiedName] '->' port=[TUPort|QualifiedName] name=ValidID ';'
+XUConnectorEnd :
+	role=[XUAssociationEnd|QualifiedName] '->' port=[XUPort|QualifiedName] name=ValidID ';'
 ;
 
 // Inner element level
@@ -79,155 +80,153 @@ TUConnectorEnd :
 // Signal- and Class-related
 
 /*
- * TODO replace with general TUAttribute
+ * TODO replace with general XUAttribute
  */
-TUSignalAttribute :
-	visibility=TUVisibility? type=JvmTypeReference name=ValidID ';'
+XUSignalAttribute :
+	visibility=XUVisibility? type=JvmTypeReference name=ValidID ';'
 ;
 
 /*
  * TODO left-factoring is no longer necessary
  */
-TUClassMember
-	: TUConstructor
-	| TUAttributeOrOperationDeclarationPrefix (
-		{TUAttribute.prefix=current} name=ValidID ';' |
-		{TUOperation.prefix=current} name=ValidID '(' (parameters+=FullJvmFormalParameter (',' parameters+=FullJvmFormalParameter)*)? ')'
-			body=XBlockExpression ';'?
+XUClassMember
+	: XUConstructor
+	| XUDeclarationPrefix (
+		{XUAttribute.prefix=current} name=ValidID ';' |
+		{XUOperation.prefix=current} name=ValidID '('
+			(parameters+=FullJvmFormalParameter (',' parameters+=FullJvmFormalParameter)*)? ')'
+				body=XBlockExpression ';'?
 	  )
-	| TUState
-	| TUTransition
-	| TUPort
+	| XUState
+	| XUTransition
+	| XUPort
 ;
 
 /*
- * The inferred EClass is used in TUClassPropertyAccessExpression.
+ * The inferred EClass is used in XUClassPropertyAccessExpression.
  */
-TUClassProperty :
-	TUPort | TUAssociationEnd
+XUClassProperty :
+	XUPort | XUAssociationEnd
 ;
 
-TUConstructor :
-	visibility=TUVisibility? name=ValidID '(' (parameters+=FullJvmFormalParameter (',' parameters+=FullJvmFormalParameter)*)? ')'
-		body=XBlockExpression ';'?
+XUConstructor :
+	visibility=XUVisibility? name=ValidID '('
+		(parameters+=FullJvmFormalParameter (',' parameters+=FullJvmFormalParameter)*)? ')'
+			body=XBlockExpression ';'?
 ;
 
-TUAttributeOrOperationDeclarationPrefix :
-	visibility=TUVisibility? type=JvmTypeReference
+XUDeclarationPrefix :
+	visibility=XUVisibility? type=JvmTypeReference
 ;
 
-TUState :
-	type=TUStateType name=ValidID ('{'
-		members+=TUStateMember* 
+XUState :
+	type=XUStateType name=ValidID ('{'
+		members+=XUStateMember* 
 	'}' ';'? | ';')
 ;
 
-enum TUStateType :
+enum XUStateType :
 	PLAIN = 'state' | INITIAL = 'initial' | CHOICE = 'choice' | COMPOSITE = 'composite'
 ;
 
-TUStateMember :
-	TUState | TUEntryOrExitActivity | TUTransition
+XUStateMember :
+	XUState | XUEntryOrExitActivity | XUTransition
 ;
 
-TUEntryOrExitActivity :
+XUEntryOrExitActivity :
 	(entry?='entry' | exit='exit') // feature 'exit' is for error markers
 		body=XBlockExpression ';'?
 ;
 
-TUTransition :
+XUTransition :
 	'transition' name=ValidID '{'
-		members+=TUTransitionMember*
+		members+=XUTransitionMember*
 	'}' ';'?
 ;
 
-TUTransitionMember
-	: TUTransitionTrigger
-	| TUTransitionVertex
-	| TUTransitionEffect
-	| TUTransitionGuard
-	| TUTransitionPort
+XUTransitionMember
+	: XUTransitionTrigger
+	| XUTransitionVertex
+	| XUTransitionEffect
+	| XUTransitionGuard
+	| XUTransitionPort
 ;
 
-TUTransitionTrigger :
-	triggerKeyword='trigger' trigger=[TUSignal|QualifiedName] ';' // feature 'triggerKeyword' is for error markers
+XUTransitionTrigger :
+	triggerKeyword='trigger' trigger=[XUSignal|QualifiedName] ';'
+		// feature 'triggerKeyword' is for error markers
 ;
 
-TUTransitionVertex :
-	(from?='from' | to='to') vertex=[TUState|QualifiedName] ';' // feature 'to' is for error markers
+XUTransitionVertex :
+	(from?='from' | to='to') vertex=[XUState|QualifiedName] ';'
+		// feature 'to' is for error markers
 ;
 
-TUTransitionEffect :
-	effect='effect' body=XBlockExpression ';'? // feature 'effect' is for error markers
+XUTransitionEffect :
+	effect='effect' body=XBlockExpression ';'?
+		// feature 'effect' is for error markers
 ;
 
-TUTransitionGuard :
-	{TUTransitionGuard} // required because of the buggy formatter2 API
-	guard='guard' '(' (else?='else' | expression=XExpression) ')' ';'? // feature 'guard' is for error markers
+XUTransitionGuard :
+	{XUTransitionGuard} // required because of the buggy formatter2 API
+	guard='guard' '(' (else?='else' | expression=XExpression) ')' ';'?
+		// feature 'guard' is for error markers
 ;
 
-TUTransitionPort :
-	portKeyword='port' port=[TUPort|QualifiedName] ';' // feature 'portKeyword' is for error markers
+XUTransitionPort :
+	portKeyword='port' port=[XUPort|QualifiedName] ';'
+		// feature 'portKeyword' is for error markers
 ;
 
-TUPort :
+XUPort :
 	behavior?='behavior'? 'port' name=ValidID '{'
-		members+=TUPortMember*
+		members+=XUPortMember*
 	'}' ';'?
 ;
 
-TUPortMember :
-	(required?='required' | provided='provided') interface=[TUInterface|QualifiedName] ';' // feature 'provided' is for error markers
+XUPortMember :
+	(required?='required' | provided='provided') interface=[XUInterface|QualifiedName] ';'
+		// feature 'provided' is for error markers
 ;
 
 // Association-related
 
-TUAssociationEnd :
-	visibility=TUVisibility? notNavigable?='hidden'?
-		multiplicity=TUMultiplicity? container?='container'?
-		endClass=[TUClass|QualifiedName] name=ValidID ';'
+XUAssociationEnd :
+	notNavigable?='hidden'? multiplicity=XUMultiplicity? container?='container'?
+		endClass=[XUClass|QualifiedName] name=ValidID ';'
 ;
 
-TUMultiplicity :
+XUMultiplicity :
 	lower=INT (upperSet?='..' (upper=INT | upperInf?='*'))? | any?='*'
 ;
 
 // Commons
 
-enum TUVisibility :
+enum XUVisibility :
 	PACKAGE = 'package' | PRIVATE = 'private' | PROTECTED = 'protected' | PUBLIC = 'public'
 ;
 
-// rAlf
+// Actions
 
-RAlfSendSignalExpression returns xbase::XExpression :
-	{RAlfSendSignalExpression}
+XUSendSignalExpression returns xbase::XExpression :
+	{XUSendSignalExpression}
 	'send' signal=XExpression 'to' target=XExpression
 ;
 
-RAlfDeleteObjectExpression returns xbase::XExpression :
-	{RAlfDeleteObjectExpression}
+XUDeleteObjectExpression returns xbase::XExpression :
+	{XUDeleteObjectExpression}
 	'delete' object=XExpression
 ;
 
-RAlfSignalAccessExpression returns xbase::XExpression :
-	{RAlfSignalAccessExpression}
+XUSignalAccessExpression returns xbase::XExpression :
+	{XUSignalAccessExpression}
 	trigger='trigger'
-	// the sole purpose of the 'trigger' feature
-	// is to provide a feature for validation
-	// to put a marker on
+		// the sole purpose of the 'trigger' feature
+		// is to provide a feature for validation
+		// to put a marker on
 ;
 
-// Added rAlf-Xbase rules
-
-/*
- * only for readibility reasons
- */ 
-XRAlfStatement returns xbase::XExpression :
-	XRAlfStatementSemicolonNeeded | XRAlfStatementSemicolonNotNeeded
-;
-
-XRAlfStatementSemicolonNotNeeded returns xbase::XExpression
+XUStatementSemicolonNotNeeded returns xbase::XExpression
 	: XIfExpression
 	| XForLoopExpression
 	| XBasicForLoopExpression
@@ -237,15 +236,15 @@ XRAlfStatementSemicolonNotNeeded returns xbase::XExpression
 	| XVariableDeclaration // semicolon included in rule
 ;
 
-XRAlfStatementSemicolonNeeded returns xbase::XExpression
+XUStatementSemicolonNeeded returns xbase::XExpression
 	: XReturnExpression
 	| XDoWhileExpression
 	| XExpression
-	| RAlfSendSignalExpression
-	| RAlfDeleteObjectExpression
+	| XUSendSignalExpression
+	| XUDeleteObjectExpression
 ;
 
-XParenthesizedRAlfExpression returns xbase::XExpression :
+XParenthesizedXUExpression returns xbase::XExpression :
 	'(' XExpression ')'
 ;
 
@@ -303,8 +302,8 @@ XPrimaryExpression returns xbase::XExpression
 	: XConstructorCall
 	| XFeatureCall
 	| XLiteral
-	| XParenthesizedRAlfExpression
-	| RAlfSignalAccessExpression
+	| XParenthesizedXUExpression
+	| XUSignalAccessExpression
 ;
 
 /*
@@ -333,7 +332,7 @@ XConstructorCall returns xbase::XExpression :
 XBlockExpression returns xbase::XExpression : 
 	{xbase::XBlockExpression}
 	'{' 
-		(expressions+=XRAlfStatementSemicolonNotNeeded | =>(expressions+=XRAlfStatementSemicolonNeeded) ';' )*
+		(=>(expressions+=XUStatementSemicolonNotNeeded) | expressions+=XUStatementSemicolonNeeded ';')*
 	'}'
 ;
 
@@ -399,7 +398,6 @@ XIfExpression returns xbase::XExpression :
 /*
  * Changes:
  * <ul>
- *     <li>'in' instead of ':'</li>
  *     <li>JvmFormalParameter -> FullJvmFormalParameter (type is mandatory)</li>
  *     <li>XBlockExpression is mandatory</li>
  *     <li>XExpression -> XExpression</li>
@@ -407,7 +405,7 @@ XIfExpression returns xbase::XExpression :
  */
 XForLoopExpression returns xbase::XExpression :
 	=>({xbase::XForLoopExpression}
-	'for' '(' declaredParam=FullJvmFormalParameter 'in') forExpression=XExpression ')'
+	'for' '(' declaredParam=FullJvmFormalParameter ':') forExpression=XExpression ')'
 		eachExpression=XBlockExpression
 ;
 
@@ -461,7 +459,7 @@ XBasicForLoopExpression returns xbase::XBasicForLoopExpression :
  * <ul>
  *     <li>removed 'var' and 'val' keywords</li>
  *     <li>type is mandatory</li>
- *     <li>XExpression as initializiation</li>
+ *     <li>XExpression as initialization</li>
  * </ul>
  */
 XVariableDeclaration returns xbase::XExpression :
@@ -518,8 +516,8 @@ XMemberFeatureCall returns xbase::XExpression :
 			)? ')'
 		)?
 	| 
-		=>({TUClassPropertyAccessExpression.left=current} '->') '('
-			right=[TUClassProperty|QualifiedName]
+		=>({XUClassPropertyAccessExpression.left=current} '->') '('
+			right=[XUClassProperty|QualifiedName]
 		')'
 	)*
 ;

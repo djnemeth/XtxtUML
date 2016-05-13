@@ -1,32 +1,32 @@
 package hu.elte.txtuml.xtxtuml.validation;
 
 import com.google.inject.Inject
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociationEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClassMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnector
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnectorEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConstructor
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUEntryOrExitActivity
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUFile
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUModelElement
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUOperation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPortMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignal
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignalAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUState
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUStateMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUStateType
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionEffect
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionGuard
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionTrigger
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionVertex
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociationEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnector
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnectorEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConstructor
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUEntryOrExitActivity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUFile
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUModelElement
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPortMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignal
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUState
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStateMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStateType
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionEffect
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionGuard
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionTrigger
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionVertex
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
@@ -42,12 +42,12 @@ class XtxtUMLUniquenessValidator extends AbstractXtxtUMLValidator {
 	@Inject extension IQualifiedNameProvider;
 
 	@Check
-	def checkModelElementNameIsUniqueExternal(TUModelElement modelElement) {
+	def checkModelElementNameIsUniqueExternal(XUModelElement modelElement) {
 		try {
 			Class.forName(modelElement.fullyQualifiedName.toString, false, getClass.getClassLoader);
 
 			// class with the same qualified name is found
-			error("Duplicate model element " + modelElement.name, modelElement, TU_MODEL_ELEMENT__NAME,
+			error("Duplicate model element " + modelElement.name, modelElement, XU_MODEL_ELEMENT__NAME,
 				NOT_UNIQUE_NAME);
 		} catch (ClassNotFoundException ex) {
 			// no problem
@@ -55,104 +55,104 @@ class XtxtUMLUniquenessValidator extends AbstractXtxtUMLValidator {
 	}
 
 	@Check
-	def checkModelElementNameIsUniqueInternal(TUModelElement modelElement) {
-		val siblingsAndSelf = (modelElement.eContainer as TUFile).elements;
+	def checkModelElementNameIsUniqueInternal(XUModelElement modelElement) {
+		val siblingsAndSelf = (modelElement.eContainer as XUFile).elements;
 		if (siblingsAndSelf.exists [
 			name == modelElement.name && it != modelElement // direct comparison is safe here
 		]) {
-			error("Duplicate model element " + modelElement.name, modelElement, TU_MODEL_ELEMENT__NAME,
+			error("Duplicate model element " + modelElement.name, modelElement, XU_MODEL_ELEMENT__NAME,
 				NOT_UNIQUE_NAME);
 		}
 	}
 
 	/*
-	 * TODO remove when general TUAttribute is introduced
+	 * TODO remove when general XUAttribute is introduced
 	 * TODO override local variable shadowing check defined in AbstractTypeComputationState
 	 */
 	@Check
-	def checkSignalAttributeNameIsUnique(TUSignalAttribute attribute) {
-		val containingSignal = attribute.eContainer as TUSignal;
+	def checkSignalAttributeNameIsUnique(XUSignalAttribute attribute) {
+		val containingSignal = attribute.eContainer as XUSignal;
 		if (containingSignal.attributes.exists [
 			name == attribute.name && it != attribute // direct comparison is safe here
 		]) {
 			error("Duplicate attribute " + attribute.name + " in signal " + containingSignal.name, attribute,
-				TU_SIGNAL_ATTRIBUTE__NAME, NOT_UNIQUE_NAME);
+				XU_SIGNAL_ATTRIBUTE__NAME, NOT_UNIQUE_NAME);
 		}
 	}
 
 	@Check
-	def checkAttributeNameIsUnique(TUAttribute attribute) {
-		val containingClass = attribute.eContainer as TUClass;
+	def checkAttributeNameIsUnique(XUAttribute attribute) {
+		val containingClass = attribute.eContainer as XUClass;
 		if (containingClass.members.exists [
-			it instanceof TUAttribute && (it as TUAttribute).name == attribute.name && it != attribute // direct comparison is safe here
+			it instanceof XUAttribute && (it as XUAttribute).name == attribute.name && it != attribute // direct comparison is safe here
 		]) {
 			error("Duplicate attribute " + attribute.name + " in class " + containingClass.name, attribute,
-				TU_ATTRIBUTE__NAME, NOT_UNIQUE_NAME);
+				XU_ATTRIBUTE__NAME, NOT_UNIQUE_NAME);
 		}
 	}
 
 	@Check
-	def checkConstructorIsUnique(TUConstructor ctor) {
-		val enclosingClass = (ctor.eContainer as TUClass);
+	def checkConstructorIsUnique(XUConstructor ctor) {
+		val enclosingClass = (ctor.eContainer as XUClass);
 		if (enclosingClass.members.exists [
-			it instanceof TUConstructor && {
-				val otherCtor = it as TUConstructor;
+			it instanceof XUConstructor && {
+				val otherCtor = it as XUConstructor;
 				otherCtor.name == ctor.name && otherCtor.parameters.typeNames == ctor.parameters.typeNames
 			} && it != ctor // direct comparison is safe here
 		]) {
 			error('''Duplicate constructor «ctor.name»(«ctor.parameters.typeNames.join(", ")») in class «enclosingClass.name»''',
-				ctor, TU_CONSTRUCTOR__NAME, NOT_UNIQUE_CONSTRUCTOR);
+				ctor, XU_CONSTRUCTOR__NAME, NOT_UNIQUE_CONSTRUCTOR);
 		}
 	}
 
 	@Check
-	def checkOperationIsUnique(TUOperation operation) {
-		val containingClass = (operation.eContainer as TUClass);
+	def checkOperationIsUnique(XUOperation operation) {
+		val containingClass = (operation.eContainer as XUClass);
 		if (containingClass.members.exists [
-			it instanceof TUOperation &&
+			it instanceof XUOperation &&
 				{
-					val siblingOperationOrSelf = it as TUOperation;
+					val siblingOperationOrSelf = it as XUOperation;
 					siblingOperationOrSelf.name == operation.name &&
 						siblingOperationOrSelf.parameters.typeNames == operation.parameters.typeNames
 				} && it != operation // direct comparison is safe here
 		]) {
 			error('''Duplicate operation «operation.name»(«operation.parameters.typeNames.join(", ")») in class «containingClass.name»''',
-				operation, TU_OPERATION__NAME, NOT_UNIQUE_OPERATION);
+				operation, XU_OPERATION__NAME, NOT_UNIQUE_OPERATION);
 		}
 	}
 
 	@Check
-	def checkInitialStateIsUnique(TUState state) {
-		if (state.type == TUStateType.INITIAL && state.membersOfEnclosingElement.exists [
-			it instanceof TUState && (it as TUState).type == TUStateType.INITIAL && it != state // direct comparison is safe here
+	def checkInitialStateIsUnique(XUState state) {
+		if (state.type == XUStateType.INITIAL && state.membersOfEnclosingElement.exists [
+			it instanceof XUState && (it as XUState).type == XUStateType.INITIAL && it != state // direct comparison is safe here
 		]) {
 			error("Duplicate initial pseudostate " + state.classQualifiedName +
-				" – only one initial pseudostate per state machine level is allowed", state, TU_STATE__NAME,
+				" – only one initial pseudostate per state machine level is allowed", state, XU_STATE__NAME,
 				NOT_UNIQUE_INITIAL_STATE);
 		}
 	}
 
 	@Check
-	def checkStateNameIsUnique(TUState state) {
+	def checkStateNameIsUnique(XUState state) {
 		if (state.membersOfEnclosingElement.exists [
-			it instanceof TUState && (it as TUState).name == state.name && it != state || // direct comparison is safe here
-			it instanceof TUTransition && (it as TUTransition).name == state.name ||
-				it instanceof TUPort && (it as TUPort).name == state.name
+			it instanceof XUState && (it as XUState).name == state.name && it != state || // direct comparison is safe here
+			it instanceof XUTransition && (it as XUTransition).name == state.name ||
+				it instanceof XUPort && (it as XUPort).name == state.name
 		]) {
 			error("State " + state.classQualifiedName +
 				" must have a unique name among states, transitions and ports of the enclosing element", state,
-				TU_STATE__NAME, NOT_UNIQUE_NAME);
+				XU_STATE__NAME, NOT_UNIQUE_NAME);
 		}
 	}
 
 	@Check
-	def checkStateActivityIsUnique(TUEntryOrExitActivity stateActivity) {
-		if ((stateActivity.eContainer as TUState).members.exists [
-			it instanceof TUEntryOrExitActivity && (it as TUEntryOrExitActivity).entry == stateActivity.entry &&
+	def checkStateActivityIsUnique(XUEntryOrExitActivity stateActivity) {
+		if ((stateActivity.eContainer as XUState).members.exists [
+			it instanceof XUEntryOrExitActivity && (it as XUEntryOrExitActivity).entry == stateActivity.entry &&
 				it != stateActivity // direct comparison is safe here
 		]) {
 			error(
-				"Duplicate activity in state " + (stateActivity.eContainer as TUState).classQualifiedName,
+				"Duplicate activity in state " + (stateActivity.eContainer as XUState).classQualifiedName,
 				stateActivity,
 				stateActivity.markerTargetForStateActivity,
 				NOT_UNIQUE_STATE_ACTIVITY
@@ -161,40 +161,41 @@ class XtxtUMLUniquenessValidator extends AbstractXtxtUMLValidator {
 	}
 
 	@Check
-	def checkInitialTransitionIsUnique(TUTransition transition) {
+	def checkInitialTransitionIsUnique(XUTransition transition) {
 		val sourceState = transition.sourceState;
-		if (sourceState?.type == TUStateType.INITIAL) {
+		if (sourceState?.type == XUStateType.INITIAL) {
 			if (transition.membersOfEnclosingElement.exists [
-				it instanceof TUTransition && (it as TUTransition).sourceState?.fullyQualifiedName == sourceState?.fullyQualifiedName &&
+				it instanceof XUTransition &&
+					(it as XUTransition).sourceState?.fullyQualifiedName == sourceState?.fullyQualifiedName &&
 					it != transition // direct comparison is safe here
 			]) {
 				error("Duplicate initial transition " + transition.classQualifiedName +
-					" – only one per initial state is allowed", transition, TU_TRANSITION__NAME,
+					" – only one per initial state is allowed", transition, XU_TRANSITION__NAME,
 					NOT_UNIQUE_INITIAL_TRANSITION);
 			}
 		}
 	}
 
 	@Check
-	def checkTransitionNameIsUnique(TUTransition transition) {
+	def checkTransitionNameIsUnique(XUTransition transition) {
 		if (transition.membersOfEnclosingElement.exists [
-			it instanceof TUTransition && (it as TUTransition).name == transition.name && it != transition || // direct comparison is safe here
-			it instanceof TUState && (it as TUState).name == transition.name ||
-				it instanceof TUPort && (it as TUPort).name == transition.name
+			it instanceof XUTransition && (it as XUTransition).name == transition.name && it != transition || // direct comparison is safe here
+			it instanceof XUState && (it as XUState).name == transition.name ||
+				it instanceof XUPort && (it as XUPort).name == transition.name
 		]) {
 			error("Transition " + transition.classQualifiedName +
-				" must have a unique name among states, transitions and ports of the enclosing element", transition,
-				TU_TRANSITION__NAME, NOT_UNIQUE_NAME);
+				" must have a unique name among states, transitions and ports of the enclosing element",
+				transition, XU_TRANSITION__NAME, NOT_UNIQUE_NAME);
 		}
 
 	}
 
 	@Check
-	def checkTransitionMemberIsUnique(TUTransitionMember transitionMember) {
-		val enclosingTransition = transitionMember.eContainer as TUTransition;
+	def checkTransitionMemberIsUnique(XUTransitionMember transitionMember) {
+		val enclosingTransition = transitionMember.eContainer as XUTransition;
 		if (enclosingTransition.members.exists [
-			eClass == transitionMember.eClass && (if (it instanceof TUTransitionVertex)
-				from == (transitionMember as TUTransitionVertex).from
+			eClass == transitionMember.eClass && (if (it instanceof XUTransitionVertex)
+				from == (transitionMember as XUTransitionVertex).from
 			else
 				true) && it != transitionMember // direct comparison is safe here
 		]) {
@@ -204,50 +205,51 @@ class XtxtUMLUniquenessValidator extends AbstractXtxtUMLValidator {
 	}
 
 	@Check
-	def checkPortNameIsUnique(TUPort port) {
-		val containingClass = port.eContainer as TUClass;
+	def checkPortNameIsUnique(XUPort port) {
+		val containingClass = port.eContainer as XUClass;
 		if (containingClass.members.exists [
-			it instanceof TUPort && (it as TUPort).name == port.name && it != port // direct comparison is safe here
-			|| it instanceof TUState && (it as TUState).name == port.name ||
-				it instanceof TUTransition && (it as TUTransition).name == port.name
+			it instanceof XUPort && (it as XUPort).name == port.name && it != port // direct comparison is safe here
+			|| it instanceof XUState && (it as XUState).name == port.name ||
+				it instanceof XUTransition && (it as XUTransition).name == port.name
 		]) {
 			error("Port " + port.name + " in class " + containingClass.name +
 				" must have a unique name among states, transitions and ports of the enclosing element", port,
-				TU_CLASS_PROPERTY__NAME, NOT_UNIQUE_NAME);
+				XU_CLASS_PROPERTY__NAME, NOT_UNIQUE_NAME);
 		}
 	}
 
 	@Check
-	def checkPortMemberIsUnique(TUPortMember portMember) {
-		val enclosingPort = portMember.eContainer as TUPort;
+	def checkPortMemberIsUnique(XUPortMember portMember) {
+		val enclosingPort = portMember.eContainer as XUPort;
 		if (enclosingPort.members.exists [
 			required == portMember.required && it != portMember // direct comparison is safe here
 		]) {
 			error("Duplicate interface type in port " + enclosingPort.name + " of class " +
-				(enclosingPort.eContainer as TUClass).name, portMember,
-				if(portMember.required) TU_PORT_MEMBER__REQUIRED else TU_PORT_MEMBER__PROVIDED, NOT_UNIQUE_PORT_MEMBER);
+				(enclosingPort.eContainer as XUClass).name, portMember,
+				if(portMember.required) XU_PORT_MEMBER__REQUIRED else XU_PORT_MEMBER__PROVIDED,
+				NOT_UNIQUE_PORT_MEMBER);
 		}
 	}
 
 	@Check
-	def checkAssociationEndNamesAreUnique(TUAssociationEnd associationEnd) {
-		val association = associationEnd.eContainer as TUAssociation;
+	def checkAssociationEndNamesAreUnique(XUAssociationEnd associationEnd) {
+		val association = associationEnd.eContainer as XUAssociation;
 		if (1 < association.ends.filter[name == associationEnd.name].length) {
 			error("Association end " + associationEnd.name + " in association " + association.name +
-				" must have a unique name", associationEnd, TU_CLASS_PROPERTY__NAME, NOT_UNIQUE_NAME);
+				" must have a unique name", associationEnd, XU_CLASS_PROPERTY__NAME, NOT_UNIQUE_NAME);
 		}
 	}
 
 	@Check
-	def checkConnectorEndIsUnique(TUConnectorEnd connectorEnd) {
-		val container = connectorEnd.eContainer as TUConnector;
+	def checkConnectorEndIsUnique(XUConnectorEnd connectorEnd) {
+		val container = connectorEnd.eContainer as XUConnector;
 		if (container.ends.exists [
-			(name == connectorEnd.name || role?.fullyQualifiedName == connectorEnd.role?.fullyQualifiedName) &&
-				it != connectorEnd // direct comparison is safe here
+			(name == connectorEnd.name ||
+				role?.fullyQualifiedName == connectorEnd.role?.fullyQualifiedName) && it != connectorEnd // direct comparison is safe here
 		]) {
 			error("Duplicate connector end " + connectorEnd.name + " in connector " + container.name +
-				" – names and roles must be unique among ends of a connector", connectorEnd, TU_CONNECTOR_END__NAME,
-				NOT_UNIQUE_CONNECTOR_END);
+				" – names and roles must be unique among ends of a connector", connectorEnd,
+				XU_CONNECTOR_END__NAME, NOT_UNIQUE_CONNECTOR_END);
 		}
 	}
 
@@ -255,8 +257,8 @@ class XtxtUMLUniquenessValidator extends AbstractXtxtUMLValidator {
 		parameters.map[parameterType?.type?.fullyQualifiedName]
 	}
 
-	def protected classQualifiedName(TUClassMember classMember) {
-		val fqnOfClass = EcoreUtil2.getContainerOfType(classMember, TUClass)?.fullyQualifiedName;
+	def protected classQualifiedName(XUClassMember classMember) {
+		val fqnOfClass = EcoreUtil2.getContainerOfType(classMember, XUClass)?.fullyQualifiedName;
 		if (fqnOfClass != null) {
 			val fqnOfMember = classMember.fullyQualifiedName;
 			return fqnOfClass.lastSegment + fqnOfMember.toString.substring(fqnOfClass.toString.length);
@@ -264,44 +266,49 @@ class XtxtUMLUniquenessValidator extends AbstractXtxtUMLValidator {
 	}
 
 	def protected isPseudostate(EObject object) {
-		object instanceof TUState && {
-			val state = object as TUState;
-			state.type == TUStateType.INITIAL || state.type == TUStateType.CHOICE
+		object instanceof XUState && {
+			val state = object as XUState;
+			state.type == XUStateType.INITIAL || state.type == XUStateType.CHOICE
 		}
 	}
 
-	def protected sourceState(TUTransition it) {
+	def protected sourceState(XUTransition it) {
 		sourceOrTargetState(true)
 	}
 
-	def protected targetState(TUTransition it) {
+	def protected targetState(XUTransition it) {
 		sourceOrTargetState(false)
 	}
 
-	def private sourceOrTargetState(TUTransition it, boolean isSource) {
+	def private sourceOrTargetState(XUTransition it, boolean isSource) {
 		(members.findFirst [
-			it instanceof TUTransitionVertex && (it as TUTransitionVertex).from == isSource
-		] as TUTransitionVertex)?.vertex
+			it instanceof XUTransitionVertex && (it as XUTransitionVertex).from == isSource
+		] as XUTransitionVertex)?.vertex
 	}
 
-	def protected markerTargetForStateActivity(TUEntryOrExitActivity stateActivity) {
-		if(stateActivity.entry) TU_ENTRY_OR_EXIT_ACTIVITY__ENTRY else TU_ENTRY_OR_EXIT_ACTIVITY__EXIT
+	def protected markerTargetForStateActivity(XUEntryOrExitActivity stateActivity) {
+		if(stateActivity.entry) XU_ENTRY_OR_EXIT_ACTIVITY__ENTRY else XU_ENTRY_OR_EXIT_ACTIVITY__EXIT
 	}
 
-	def protected markerTargetForTransitionMember(TUTransitionMember transitionMember) {
+	def protected markerTargetForTransitionMember(XUTransitionMember transitionMember) {
 		switch (transitionMember) {
-			TUTransitionTrigger: TU_TRANSITION_TRIGGER__TRIGGER_KEYWORD
-			TUTransitionVertex: if(transitionMember.from) TU_TRANSITION_VERTEX__FROM else TU_TRANSITION_VERTEX__TO
-			TUTransitionEffect: TU_TRANSITION_EFFECT__EFFECT
-			TUTransitionGuard: TU_TRANSITION_GUARD__GUARD
-			TUTransitionPort: TU_TRANSITION_PORT__PORT_KEYWORD
+			XUTransitionTrigger:
+				XU_TRANSITION_TRIGGER__TRIGGER_KEYWORD
+			XUTransitionVertex:
+				if(transitionMember.from) XU_TRANSITION_VERTEX__FROM else XU_TRANSITION_VERTEX__TO
+			XUTransitionEffect:
+				XU_TRANSITION_EFFECT__EFFECT
+			XUTransitionGuard:
+				XU_TRANSITION_GUARD__GUARD
+			XUTransitionPort:
+				XU_TRANSITION_PORT__PORT_KEYWORD
 		}
 	}
 
-	def protected membersOfEnclosingElement(TUStateMember stateMember) {
+	def protected membersOfEnclosingElement(XUStateMember stateMember) {
 		switch (container : stateMember.eContainer) {
-			TUClass: container.members
-			TUState: container.members
+			XUClass: container.members
+			XUState: container.members
 		}
 	}
 

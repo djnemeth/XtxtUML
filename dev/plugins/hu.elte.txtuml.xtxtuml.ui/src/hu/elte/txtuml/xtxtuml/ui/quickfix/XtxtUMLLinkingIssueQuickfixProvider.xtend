@@ -2,10 +2,10 @@ package hu.elte.txtuml.xtxtuml.ui.quickfix
 
 import com.google.inject.Inject
 import hu.elte.txtuml.xtxtuml.common.XtxtUMLUtils
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUComposition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnector
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUComposition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnector
 import hu.elte.txtuml.xtxtuml.xtxtUML.XtxtUMLPackage
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.emf.ecore.EObject
@@ -90,8 +90,8 @@ class XtxtUMLLinkingIssueQuickfixProvider extends JavaTypeQuickfixes {
 					val containerDescription = scopeElement.EContainerDescription;
 					val container = containerDescription?.EObjectOrProxy;
 
-					if (container instanceof TUAssociation || container instanceof TUClass ||
-						container instanceof TUComposition || container instanceof TUConnector) { // check our potential nested "classes"
+					if (container instanceof XUAssociation || container instanceof XUClass ||
+						container instanceof XUComposition || container instanceof XUConnector) { // check our potential nested "classes"
 						importName = containerDescription?.qualifiedName?.toString;
 					}
 				}

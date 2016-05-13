@@ -1,10 +1,10 @@
 package hu.elte.txtuml.xtxtuml.validation
 
 import com.google.inject.Inject
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUComposition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnector
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnectorEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUComposition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnector
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnectorEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPort
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.validation.Check
 
@@ -16,32 +16,32 @@ class XtxtUMLConnectorValidator extends XtxtUMLAssociationValidator {
 	@Inject extension IQualifiedNameProvider;
 
 	@Check
-	def checkConnectorHaveExactlyTwoEnds(TUConnector connector) {
+	def checkConnectorHaveExactlyTwoEnds(XUConnector connector) {
 		if (connector.ends.length != 2) {
-			error("Connector " + connector.name + " must have exactly two ends", connector, TU_MODEL_ELEMENT__NAME,
+			error("Connector " + connector.name + " must have exactly two ends", connector, XU_MODEL_ELEMENT__NAME,
 				CONNECTOR_END_COUNT_MISMATCH);
 		}
 	}
 
 	@Check
-	def checkContainerEndIsAllowedAndNeededOnlyInDelegation(TUConnector connector) {
+	def checkContainerEndIsAllowedAndNeededOnlyInDelegation(XUConnector connector) {
 		val containerEnds = connector.ends.filter[role.isContainer];
 		if (connector.delegation) {
 			if (containerEnds.length != 1) {
 				error("Delegation connector " + connector.name + " must have exactly one container role", connector,
-					TU_MODEL_ELEMENT__NAME, CONTAINER_ROLE_COUNT_MISMATCH);
+					XU_MODEL_ELEMENT__NAME, CONTAINER_ROLE_COUNT_MISMATCH);
 			}
 		} else {
 			containerEnds.forEach [
 				error("Container role " + role?.name + " of connector end " + connector.name + "." + name +
-					" must not be present in an assembly connector", it, TU_CONNECTOR_END__ROLE,
+					" must not be present in an assembly connector", it, XU_CONNECTOR_END__ROLE,
 					CONTAINER_ROLE_IN_ASSSEMBLY_CONNECTOR);
 			]
 		}
 	}
 
 	@Check
-	def checkCompositionsBehindConnectorEnds(TUConnector connector) {
+	def checkCompositionsBehindConnectorEnds(XUConnector connector) {
 		if (connector.ends.size != 2) {
 			return;
 		}
@@ -49,14 +49,14 @@ class XtxtUMLConnectorValidator extends XtxtUMLAssociationValidator {
 		val roleA = connector.ends.get(0).role;
 		val roleB = connector.ends.get(1).role;
 
-		val compositionOfRoleA = if(roleA?.eContainer instanceof TUComposition) roleA.eContainer as TUComposition;
-		val compositionOfRoleB = if(roleB?.eContainer instanceof TUComposition) roleB.eContainer as TUComposition;
+		val compositionOfRoleA = if(roleA?.eContainer instanceof XUComposition) roleA.eContainer as XUComposition;
+		val compositionOfRoleB = if(roleB?.eContainer instanceof XUComposition) roleB.eContainer as XUComposition;
 
 		if (connector.delegation) {
 			if (compositionOfRoleA == null ||
 				compositionOfRoleA.fullyQualifiedName != compositionOfRoleB?.fullyQualifiedName) {
 				error("Delegation connector " + connector.name +
-					" must connect ports of a component and one of its parts", connector, TU_MODEL_ELEMENT__NAME,
+					" must connect ports of a component and one of its parts", connector, XU_MODEL_ELEMENT__NAME,
 					COMPOSITION_MISMATCH_IN_DELEGATION_CONNECTOR);
 			}
 		} else { // assembly connector
@@ -66,14 +66,14 @@ class XtxtUMLConnectorValidator extends XtxtUMLAssociationValidator {
 				compositionOfRoleB.ends.findFirst[container]?.endClass?.fullyQualifiedName // container must be the same
 			) {
 				error("Assembly connector " + connector.name +
-					" must connect ports of parts belonging to the same component", connector, TU_MODEL_ELEMENT__NAME,
+					" must connect ports of parts belonging to the same component", connector, XU_MODEL_ELEMENT__NAME,
 					COMPOSITION_MISMATCH_IN_ASSEMBLY_CONNECTOR);
 			}
 		}
 	}
 
 	@Check
-	def checkConnectorEndPortCompatibility(TUConnector connector) {
+	def checkConnectorEndPortCompatibility(XUConnector connector) {
 		if (connector.ends.size != 2) {
 			return;
 		}
@@ -88,23 +88,23 @@ class XtxtUMLConnectorValidator extends XtxtUMLAssociationValidator {
 
 		if (connector.delegation && (requiredAName != requiredBName || providedAName != providedBName) ||
 			!connector.delegation && (requiredAName != providedBName || providedAName != requiredBName)) {
-			error("Connector " + connector.name + " connects incompatible ports", connector, TU_MODEL_ELEMENT__NAME,
+			error("Connector " + connector.name + " connects incompatible ports", connector, XU_MODEL_ELEMENT__NAME,
 				INCOMPATIBLE_PORTS);
 		}
 	}
 
 	@Check
-	def checkOwnerOfConnectorEndPort(TUConnectorEnd connEnd) {
+	def checkOwnerOfConnectorEndPort(XUConnectorEnd connEnd) {
 		val ownerOfPort = connEnd.port?.eContainer;
 		val classInRole = connEnd.role?.endClass;
 
 		if (ownerOfPort?.fullyQualifiedName != classInRole?.fullyQualifiedName) {
 			error(connEnd.port?.name + " cannot be resolved as a port of class " + classInRole?.name, connEnd,
-				TU_CONNECTOR_END__PORT, NOT_OWNED_PORT);
+				XU_CONNECTOR_END__PORT, NOT_OWNED_PORT);
 		}
 	}
 
-	def protected getInterface(TUPort port, boolean ofTypeRequired) {
+	def protected getInterface(XUPort port, boolean ofTypeRequired) {
 		port.members.findFirst[required == ofTypeRequired]?.interface
 	}
 

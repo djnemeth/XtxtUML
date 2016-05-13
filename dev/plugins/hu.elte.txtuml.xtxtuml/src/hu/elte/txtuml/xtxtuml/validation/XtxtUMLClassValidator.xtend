@@ -1,19 +1,19 @@
 package hu.elte.txtuml.xtxtuml.validation;
 
 import com.google.inject.Inject
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClassMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConstructor
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUEntryOrExitActivity
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUState
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUStateMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUStateType
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionGuard
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionTrigger
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionVertex
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConstructor
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUEntryOrExitActivity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUState
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStateMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStateType
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionGuard
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionTrigger
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionVertex
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -29,7 +29,7 @@ class XtxtUMLClassValidator extends XtxtUMLFileValidator {
 	@Inject extension IQualifiedNameProvider;
 
 	@Check
-	def checkNoCycleInClassHiearchy(TUClass clazz) {
+	def checkNoCycleInClassHiearchy(XUClass clazz) {
 		if (clazz.superClass == null) {
 			return;
 		}
@@ -41,7 +41,7 @@ class XtxtUMLClassValidator extends XtxtUMLFileValidator {
 		while (currentClass != null) {
 			if (visitedClasses.contains(currentClass)) {
 				error("Cycle in hierarchy of class " + clazz.name + " reaching " + currentClass.name,
-					TU_CLASS__SUPER_CLASS, CLASS_HIERARCHY_CYCLE);
+					XU_CLASS__SUPER_CLASS, CLASS_HIERARCHY_CYCLE);
 				return;
 			}
 
@@ -51,88 +51,88 @@ class XtxtUMLClassValidator extends XtxtUMLFileValidator {
 	}
 
 	@Check
-	def checkConstructorName(TUConstructor ctor) {
+	def checkConstructorName(XUConstructor ctor) {
 		val name = ctor.name;
-		val enclosingClassName = (ctor.eContainer as TUClass).name;
+		val enclosingClassName = (ctor.eContainer as XUClass).name;
 		if (name != enclosingClassName) {
 			error('''Constructor «name»(«ctor.parameters.typeNames.join(", ")») in class «enclosingClassName» must be named as its enclosing class''',
-				ctor, TU_CONSTRUCTOR__NAME, INVALID_CONSTRUCTOR_NAME);
+				ctor, XU_CONSTRUCTOR__NAME, INVALID_CONSTRUCTOR_NAME);
 		}
 	}
 
 	@Check
-	def checkInitialStateIsDefinedInClass(TUClass clazz) {
+	def checkInitialStateIsDefinedInClass(XUClass clazz) {
 		if (clazz.members.isInitialStateMissing) {
-			missingInitialState(clazz, "class " + clazz.name, TU_MODEL_ELEMENT__NAME)
+			missingInitialState(clazz, "class " + clazz.name, XU_MODEL_ELEMENT__NAME)
 		}
 	}
 
 	@Check
-	def checkInitialStateIsDefinedInCompositeState(TUState state) {
-		if (state.type == TUStateType.COMPOSITE && state.members.isInitialStateMissing) {
-			missingInitialState(state, "composite state " + state.classQualifiedName, TU_STATE__NAME)
+	def checkInitialStateIsDefinedInCompositeState(XUState state) {
+		if (state.type == XUStateType.COMPOSITE && state.members.isInitialStateMissing) {
+			missingInitialState(state, "composite state " + state.classQualifiedName, XU_STATE__NAME)
 		}
 	}
 
 	@Check
-	def checkPseudostateIsLeavable(TUState state) {
+	def checkPseudostateIsLeavable(XUState state) {
 		if (state.isPseudostate && !state.membersOfEnclosingElement.exists [
-			it instanceof TUTransition &&
-				(it as TUTransition).sourceState?.fullyQualifiedName == state.fullyQualifiedName
+			it instanceof XUTransition &&
+				(it as XUTransition).sourceState?.fullyQualifiedName == state.fullyQualifiedName
 		]) {
 			error("There are no outgoing transitions from pseudostate " + state.classQualifiedName +
-				" – state machines cannot stop in pseudostates", state, TU_STATE__NAME, NOT_LEAVABLE_PSEUDOSTATE);
+				" – state machines cannot stop in pseudostates", state, XU_STATE__NAME, NOT_LEAVABLE_PSEUDOSTATE);
 		}
 	}
 
 	@Check
-	def checkStateIsReachable(TUState state) {
+	def checkStateIsReachable(XUState state) {
 		if (!state.membersOfEnclosingElement.isInitialStateMissing &&
 			!state.isReachableFromInitialState(newHashSet, false)) {
-			warning("State " + state.classQualifiedName + " is unreachable", state, TU_STATE__NAME, UNREACHABLE_STATE);
+			warning("State " + state.classQualifiedName + " is unreachable", state, XU_STATE__NAME, UNREACHABLE_STATE);
 		}
 	}
 
 	@Check
-	def checkStateOrTransitionIsDefinedInClassOrCompositeState(TUStateMember stateMember) {
+	def checkStateOrTransitionIsDefinedInClassOrCompositeState(XUStateMember stateMember) {
 		var isStateOrTransition = false;
 		val nameAndMarkerTarget = switch (stateMember) {
-			TUState: {
+			XUState: {
 				isStateOrTransition = true;
-				"State " -> TU_STATE__NAME
+				"State " -> XU_STATE__NAME
 			}
-			TUTransition: {
+			XUTransition: {
 				isStateOrTransition = true;
-				"Transition " -> TU_TRANSITION__NAME
+				"Transition " -> XU_TRANSITION__NAME
 			}
 		}
 
-		if (isStateOrTransition && stateMember.eContainer instanceof TUState &&
-			(stateMember.eContainer as TUState).type != TUStateType.COMPOSITE) {
-			error(nameAndMarkerTarget.key + (stateMember as TUClassMember).classQualifiedName +
+		if (isStateOrTransition && stateMember.eContainer instanceof XUState &&
+			(stateMember.eContainer as XUState).type != XUStateType.COMPOSITE) {
+			error(nameAndMarkerTarget.key + (stateMember as XUClassMember).classQualifiedName +
 				" can be defined only in a class or a composite state", stateMember, nameAndMarkerTarget.value,
 				STATE_OR_TRANSITION_IN_NOT_COMPOSITE_STATE);
 		}
 	}
 
 	@Check
-	def checkNoActivityInPseudostate(TUEntryOrExitActivity activity) {
+	def checkNoActivityInPseudostate(XUEntryOrExitActivity activity) {
 		if (activity.eContainer.isPseudostate) {
 			error("Activities must not be present in pseudostate " +
-				(activity.eContainer as TUState).classQualifiedName, activity, activity.markerTargetForStateActivity,
+				(activity.eContainer as XUState).classQualifiedName, activity, activity.markerTargetForStateActivity,
 				ACTIVITY_IN_PSEUDOSTATE);
 		}
 	}
 
 	@Check
-	def checkMandatoryTransitionMembers(TUTransition transition) {
+	def checkMandatoryTransitionMembers(XUTransition transition) {
 		var hasSource = false;
 		var hasTarget = false;
 		var hasTrigger = false;
 
 		for (member : transition.members) {
 			switch (member) {
-				TUTransitionVertex:
+				XUTransitionVertex:
 					if (member.from) {
 						hasSource = true;
 						if (member.vertex.isPseudostate) {
@@ -141,42 +141,42 @@ class XtxtUMLClassValidator extends XtxtUMLFileValidator {
 					} else {
 						hasTarget = true;
 					}
-				TUTransitionTrigger:
+				XUTransitionTrigger:
 					hasTrigger = true
 			}
 		}
 
 		if (!hasSource || !hasTarget || !hasTrigger) {
 			error("Missing mandatory member ('from', 'to' or 'trigger') in transition " + transition.classQualifiedName,
-				transition, TU_TRANSITION__NAME, MISSING_MANDATORY_TRANSITION_MEMBER);
+				transition, XU_TRANSITION__NAME, MISSING_MANDATORY_TRANSITION_MEMBER);
 		}
 	}
 
 	@Check
-	def checkTransitionTargetIsNotInitialState(TUTransitionVertex transitionVertex) {
-		if (!transitionVertex.from && transitionVertex.vertex?.type == TUStateType.INITIAL) {
+	def checkTransitionTargetIsNotInitialState(XUTransitionVertex transitionVertex) {
+		if (!transitionVertex.from && transitionVertex.vertex?.type == XUStateType.INITIAL) {
 			error("Initial state cannot be the target of transition " +
-				(transitionVertex.eContainer as TUTransition).classQualifiedName, transitionVertex,
-				TU_TRANSITION_VERTEX__VERTEX, TARGET_IS_INITIAL_STATE);
+				(transitionVertex.eContainer as XUTransition).classQualifiedName, transitionVertex,
+				XU_TRANSITION_VERTEX__VERTEX, TARGET_IS_INITIAL_STATE);
 		}
 	}
 
 	@Check
-	def checkGuardIsNotForInitialTransition(TUTransitionGuard transitionGuard) {
-		val enclosingTransition = transitionGuard.eContainer as TUTransition;
-		if (enclosingTransition.sourceState?.type == TUStateType.INITIAL) {
+	def checkGuardIsNotForInitialTransition(XUTransitionGuard transitionGuard) {
+		val enclosingTransition = transitionGuard.eContainer as XUTransition;
+		if (enclosingTransition.sourceState?.type == XUStateType.INITIAL) {
 			error("Guards must not be present in initial transition " + enclosingTransition.classQualifiedName,
-				transitionGuard, TU_TRANSITION_GUARD__GUARD, INVALID_TRANSITION_MEMBER);
+				transitionGuard, XU_TRANSITION_GUARD__GUARD, INVALID_TRANSITION_MEMBER);
 		}
 	}
 
 	@Check
-	def checkMemberOfTransitionFromPseudostate(TUTransitionMember transitionMember) {
-		val enclosingTransition = transitionMember.eContainer as TUTransition;
+	def checkMemberOfTransitionFromPseudostate(XUTransitionMember transitionMember) {
+		val enclosingTransition = transitionMember.eContainer as XUTransition;
 		val sourceState = enclosingTransition.sourceState;
 
 		if (sourceState != null && sourceState.isPseudostate &&
-			(transitionMember instanceof TUTransitionTrigger || transitionMember instanceof TUTransitionPort)) {
+			(transitionMember instanceof XUTransitionTrigger || transitionMember instanceof XUTransitionPort)) {
 			error(
 				"Triggers and port restrictions must not be present in transition " +
 					enclosingTransition.classQualifiedName + ", as its source is a pseudostate", transitionMember,
@@ -185,40 +185,40 @@ class XtxtUMLClassValidator extends XtxtUMLFileValidator {
 	}
 
 	@Check
-	def checkElseGuard(TUTransitionGuard guard) {
-		if (guard.^else && (guard.eContainer as TUTransition).sourceState?.type != TUStateType.CHOICE) {
+	def checkElseGuard(XUTransitionGuard guard) {
+		if (guard.^else && (guard.eContainer as XUTransition).sourceState?.type != XUStateType.CHOICE) {
 			error("'else' condition can be used only if the source of the transition is a choice pseudostate", guard,
-				TU_TRANSITION_GUARD__ELSE, INVALID_ELSE_GUARD)
+				XU_TRANSITION_GUARD__ELSE, INVALID_ELSE_GUARD)
 		}
 	}
 
 	@Check
-	def checkOwnerOfTriggerPort(TUTransitionPort triggerPort) {
-		val containingClass = EcoreUtil2.getContainerOfType(triggerPort, TUClass); // due to composite states
+	def checkOwnerOfTriggerPort(XUTransitionPort triggerPort) {
+		val containingClass = EcoreUtil2.getContainerOfType(triggerPort, XUClass); // due to composite states
 		if (triggerPort.port != null &&
 			triggerPort.port.eContainer.fullyQualifiedName != containingClass.fullyQualifiedName) {
 			error(triggerPort.port.name + " cannot be resolved as a port of class " + containingClass.name, triggerPort,
-				TU_TRANSITION_PORT__PORT, NOT_OWNED_TRIGGER_PORT);
+				XU_TRANSITION_PORT__PORT, NOT_OWNED_TRIGGER_PORT);
 		}
 	}
 
 	@Check
-	def checkTriggerPortIsBehavior(TUTransitionPort triggerPort) {
+	def checkTriggerPortIsBehavior(XUTransitionPort triggerPort) {
 		if (triggerPort.port != null && !triggerPort.port.behavior) {
-			error("Port " + triggerPort.port.name + " in class " + (triggerPort.port.eContainer as TUClass).name +
-				" is not a behavior port", triggerPort, TU_TRANSITION_PORT__PORT, NOT_BEHAVIOR_TRIGGER_PORT)
+			error("Port " + triggerPort.port.name + " in class " + (triggerPort.port.eContainer as XUClass).name +
+				" is not a behavior port", triggerPort, XU_TRANSITION_PORT__PORT, NOT_BEHAVIOR_TRIGGER_PORT)
 		}
 	}
 
 	@Check
-	def checkTransitionVertexLevel(TUTransitionVertex transitionVertex) {
-		val enclosingTransition = transitionVertex.eContainer as TUTransition;
+	def checkTransitionVertexLevel(XUTransitionVertex transitionVertex) {
+		val enclosingTransition = transitionVertex.eContainer as XUTransition;
 		if (transitionVertex.vertex != null && transitionVertex.vertex.eContainer.fullyQualifiedName !=
 			enclosingTransition.eContainer.fullyQualifiedName) {
 			error(
 				"Invalid vertex " + transitionVertex.vertex.classQualifiedName + " in transition " +
 					enclosingTransition.classQualifiedName + " – transition must not cross state machine levels",
-				transitionVertex, TU_TRANSITION_VERTEX__VERTEX, VERTEX_LEVEL_MISMATCH);
+				transitionVertex, XU_TRANSITION_VERTEX__VERTEX, VERTEX_LEVEL_MISMATCH);
 		}
 	}
 
@@ -229,8 +229,8 @@ class XtxtUMLClassValidator extends XtxtUMLFileValidator {
 
 		var isOtherStateDefined = false;
 		for (member : members) {
-			if (member instanceof TUState) {
-				if (member.type == TUStateType.INITIAL) {
+			if (member instanceof XUState) {
+				if (member.type == XUStateType.INITIAL) {
 					return false;
 				} else {
 					isOtherStateDefined = true;

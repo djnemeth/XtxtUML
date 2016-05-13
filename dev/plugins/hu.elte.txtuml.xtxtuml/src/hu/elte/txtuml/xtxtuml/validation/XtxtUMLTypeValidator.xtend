@@ -5,12 +5,12 @@ import hu.elte.txtuml.api.model.ModelClass
 import hu.elte.txtuml.api.model.Port
 import hu.elte.txtuml.api.model.Signal
 import hu.elte.txtuml.api.model.external.ExternalType
-import hu.elte.txtuml.xtxtuml.xtxtUML.RAlfDeleteObjectExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.RAlfSendSignalExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttributeOrOperationDeclarationPrefix
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClassPropertyAccessExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUOperation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignalAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassPropertyAccessExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeclarationPrefix
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeleteObjectExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSendSignalExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmFormalParameter
@@ -28,12 +28,12 @@ class XtxtUMLTypeValidator extends XtxtUMLUniquenessValidator {
 	def checkTypeReference(JvmTypeReference typeRef) {
 		var isAttribute = false;
 		val isValid = switch (container : typeRef.eContainer) {
-			TUSignalAttribute: {
+			XUSignalAttribute: {
 				isAttribute = true;
 				typeRef.isAllowedAttributeType(false)
 			}
-			TUAttributeOrOperationDeclarationPrefix: {
-				if (container.eContainer instanceof TUOperation) {
+			XUDeclarationPrefix: {
+				if (container.eContainer instanceof XUOperation) {
 					typeRef.isAllowedParameterType(true)
 				} else {
 					isAttribute = true;
@@ -59,27 +59,27 @@ class XtxtUMLTypeValidator extends XtxtUMLUniquenessValidator {
 	}
 
 	@Check
-	def checkSendSignalExpressionTypes(RAlfSendSignalExpression sendExpr) {
+	def checkSendSignalExpressionTypes(XUSendSignalExpression sendExpr) {
 		if (!sendExpr.signal.isConformantWith(Signal, false)) {
-			typeMismatch("Signal", sendExpr, RALF_SEND_SIGNAL_EXPRESSION__SIGNAL);
+			typeMismatch("Signal", sendExpr, XU_SEND_SIGNAL_EXPRESSION__SIGNAL);
 		}
 
 		if (!sendExpr.target.isConformantWith(ModelClass, false) && !sendExpr.target.isConformantWith(Port, false)) {
-			typeMismatch("Class or Port", sendExpr, RALF_SEND_SIGNAL_EXPRESSION__TARGET);
+			typeMismatch("Class or Port", sendExpr, XU_SEND_SIGNAL_EXPRESSION__TARGET);
 		}
 	}
 
 	@Check
-	def checkDeleteObjectExpressionTypes(RAlfDeleteObjectExpression deleteExpr) {
+	def checkDeleteObjectExpressionTypes(XUDeleteObjectExpression deleteExpr) {
 		if (!deleteExpr.object.isConformantWith(ModelClass, false)) {
-			typeMismatch("Class", deleteExpr, RALF_DELETE_OBJECT_EXPRESSION__OBJECT)
+			typeMismatch("Class", deleteExpr, XU_DELETE_OBJECT_EXPRESSION__OBJECT)
 		}
 	}
 
 	@Check
-	def checkClassPropertyAccessExpressionTypes(TUClassPropertyAccessExpression accessExpr) {
+	def checkClassPropertyAccessExpressionTypes(XUClassPropertyAccessExpression accessExpr) {
 		if (!accessExpr.left.isConformantWith(ModelClass, false)) {
-			typeMismatch("Class", accessExpr, TU_CLASS_PROPERTY_ACCESS_EXPRESSION__LEFT)
+			typeMismatch("Class", accessExpr, XU_CLASS_PROPERTY_ACCESS_EXPRESSION__LEFT)
 		}
 	}
 

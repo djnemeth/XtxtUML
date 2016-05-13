@@ -2,7 +2,7 @@ package hu.elte.txtuml.xtxtuml.typesystem
 
 import com.google.common.collect.ImmutableMap
 import hu.elte.txtuml.api.model.ModelClass
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.xbase.scoping.batch.IFeatureNames
@@ -18,10 +18,10 @@ class XtxtUMLReentrantTypeResolver extends LogicalContainerAwareReentrantTypeRes
 
 		// customized `this` and `super` lookup
 		var thisMaybeModelClassType = thisType;
-		var foundModelClassParentOrSelf = thisMaybeModelClassType.sourceElement instanceof TUClass;
+		var foundModelClassParentOrSelf = thisMaybeModelClassType.sourceElement instanceof XUClass;
 		while (!foundModelClassParentOrSelf && thisMaybeModelClassType.eContainer instanceof JvmDeclaredType) {
 			thisMaybeModelClassType = thisMaybeModelClassType.eContainer as JvmDeclaredType;
-			foundModelClassParentOrSelf = thisMaybeModelClassType.sourceElement instanceof TUClass;
+			foundModelClassParentOrSelf = thisMaybeModelClassType.sourceElement instanceof XUClass;
 		}
 
 		var JvmTypeReference superMaybeModelClassType;

@@ -2,7 +2,7 @@ package hu.elte.txtuml.xtxtuml.tests
 
 import com.google.inject.Inject
 import hu.elte.txtuml.xtxtuml.XtxtUMLInjectorProvider
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUFile
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUFile
 import hu.elte.txtuml.xtxtuml.xtxtUML.XtxtUMLPackage
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
@@ -17,7 +17,7 @@ import static hu.elte.txtuml.xtxtuml.validation.XtxtUMLIssueCodes.*
 @InjectWith(XtxtUMLInjectorProvider)
 class XtxtUMLAssociationValidatorTest {
 
-	@Inject extension ParseHelper<TUFile>
+	@Inject extension ParseHelper<XUFile>
 	@Inject extension ValidationTestHelper
 
 	@Test
@@ -44,7 +44,7 @@ class XtxtUMLAssociationValidatorTest {
 			association A_B {
 				1 A a;
 			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.TUAssociation, ASSOCIATION_END_COUNT_MISMATCH)
+		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUAssociation, ASSOCIATION_END_COUNT_MISMATCH)
 	}
 
 	@Test
@@ -59,7 +59,7 @@ class XtxtUMLAssociationValidatorTest {
 				1 B b;
 				1 B b2;
 			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.TUAssociation, ASSOCIATION_END_COUNT_MISMATCH)
+		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUAssociation, ASSOCIATION_END_COUNT_MISMATCH)
 	}
 
 	@Test
@@ -73,7 +73,7 @@ class XtxtUMLAssociationValidatorTest {
 				1 A a;
 				1 B a;
 			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.TUAssociationEnd, NOT_UNIQUE_NAME)
+		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUAssociationEnd, NOT_UNIQUE_NAME)
 	}
 
 	@Test
@@ -87,7 +87,7 @@ class XtxtUMLAssociationValidatorTest {
 				container A a;
 				1 B b;
 			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.TUAssociationEnd, CONTAINER_END_IN_ASSOCIATION)
+		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUAssociationEnd, CONTAINER_END_IN_ASSOCIATION)
 	}
 
 	@Test
@@ -101,7 +101,7 @@ class XtxtUMLAssociationValidatorTest {
 				1 A a;
 				1 B b;
 			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.TUComposition, CONTAINER_END_COUNT_MISMATCH)
+		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUComposition, CONTAINER_END_COUNT_MISMATCH)
 	}
 
 	@Test
@@ -115,7 +115,7 @@ class XtxtUMLAssociationValidatorTest {
 				container A a;
 				container B b;
 			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.TUComposition, CONTAINER_END_COUNT_MISMATCH)
+		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUComposition, CONTAINER_END_COUNT_MISMATCH)
 	}
 
 	@Test

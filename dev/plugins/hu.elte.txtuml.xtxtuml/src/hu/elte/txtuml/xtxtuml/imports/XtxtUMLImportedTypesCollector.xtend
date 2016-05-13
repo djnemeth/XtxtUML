@@ -1,15 +1,15 @@
 package hu.elte.txtuml.xtxtuml.imports
 
 import com.google.inject.Inject
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociationEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClassPropertyAccessExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnectorEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPortMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUReception
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionTrigger
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionVertex
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociationEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassPropertyAccessExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnectorEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPortMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUReception
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionTrigger
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionVertex
 import hu.elte.txtuml.xtxtuml.xtxtUML.XtxtUMLPackage
 import java.util.ArrayList
 import org.eclipse.emf.common.util.TreeIterator
@@ -39,36 +39,36 @@ class XtxtUMLImportedTypesCollector extends ImportedTypesCollector {
 
 			// determine the grammar-level cross-referenced types inside XtxtUML expressions
 			switch (next : contents.next()) {
-				TUClass:
+				XUClass:
 					references.add(next.superClass?.getPrimaryJvmElement as JvmType ->
-						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.TUClass_SuperClass, 0))
-				TUTransitionTrigger:
+						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.XUClass_SuperClass, 0))
+				XUTransitionTrigger:
 					references.add(next.trigger?.getPrimaryJvmElement as JvmType ->
-						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.TUTransitionTrigger_Trigger, 0))
-				TUTransitionVertex:
+						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.XUTransitionTrigger_Trigger, 0))
+				XUTransitionVertex:
 					references.add(next.vertex?.getPrimaryJvmElement as JvmType ->
-						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.TUTransitionVertex_Vertex, 0))
-				TUAssociationEnd:
+						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.XUTransitionVertex_Vertex, 0))
+				XUAssociationEnd:
 					references.add(next.endClass?.getPrimaryJvmElement as JvmType ->
-						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.TUAssociationEnd_EndClass, 0))
-				TUClassPropertyAccessExpression:
+						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.XUAssociationEnd_EndClass, 0))
+				XUClassPropertyAccessExpression:
 					references.add(adjustedNestedClassReference(next.right?.getPrimaryJvmElement as JvmType,
-						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.TUClassPropertyAccessExpression_Right, 0)))
-				TUReception:
+						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.XUClassPropertyAccessExpression_Right, 0)))
+				XUReception:
 					references.add(next.signal?.getPrimaryJvmElement as JvmType ->
-						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.TUReception_Signal, 0))
-				TUConnectorEnd: {
+						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.XUReception_Signal, 0))
+				XUConnectorEnd: {
 					references.add(adjustedNestedClassReference(next.role?.getPrimaryJvmElement as JvmType,
-						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.TUConnectorEnd_Role, 0)))
+						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.XUConnectorEnd_Role, 0)))
 					references.add(adjustedNestedClassReference(next.port?.getPrimaryJvmElement as JvmType,
-						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.TUConnectorEnd_Port, 0)))
+						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.XUConnectorEnd_Port, 0)))
 				}
-				TUPortMember:
+				XUPortMember:
 					references.add(next.interface?.getPrimaryJvmElement as JvmType ->
-						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.TUPortMember_Interface, 0))
-				TUTransitionPort:
+						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.XUPortMember_Interface, 0))
+				XUTransitionPort:
 					references.add(next.port?.getPrimaryJvmElement as JvmType ->
-						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.TUTransitionPort_Port, 0))
+						next.getFullTextRegion(XtxtUMLPackage::eINSTANCE.XUTransitionPort_Port, 0))
 			}
 
 			for (ref : references) {

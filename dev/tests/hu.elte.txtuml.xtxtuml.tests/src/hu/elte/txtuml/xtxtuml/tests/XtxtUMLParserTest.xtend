@@ -2,7 +2,7 @@ package hu.elte.txtuml.xtxtuml.tests;
 
 import com.google.inject.Inject
 import hu.elte.txtuml.xtxtuml.XtxtUMLInjectorProvider
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUFile
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUFile
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtext.junit4.InjectWith
@@ -16,7 +16,7 @@ import org.junit.runner.RunWith
 @InjectWith(XtxtUMLInjectorProvider)
 class XtxtUMLParserTest {
 
-	@Inject extension ParseHelper<TUFile>;
+	@Inject extension ParseHelper<XUFile>;
 	@Inject extension ValidationTestHelper;
 
 	@Test

@@ -19,33 +19,33 @@ import hu.elte.txtuml.api.model.Signal
 import hu.elte.txtuml.api.model.StateMachine
 import hu.elte.txtuml.api.model.To
 import hu.elte.txtuml.api.model.Trigger
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociationEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttributeOrOperationDeclarationPrefix
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUComposition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnector
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnectorEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConstructor
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUEntryOrExitActivity
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUExecution
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUInterface
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUModelDeclaration
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUOperation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPortMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUReception
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignal
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignalAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUState
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionEffect
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionGuard
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionTrigger
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionVertex
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUVisibility
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociationEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUComposition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnector
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnectorEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConstructor
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeclarationPrefix
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUEntryOrExitActivity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUExecution
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUInterface
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUModelDeclaration
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPortMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUReception
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignal
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUState
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionEffect
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionGuard
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionTrigger
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionVertex
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUVisibility
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmDeclaredType
@@ -67,11 +67,11 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension IJvmModelAssociations
 	@Inject extension IQualifiedNameProvider
 
-	def dispatch void infer(TUModelDeclaration decl, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(XUModelDeclaration decl, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(decl.toPackageInfo(decl.fullyQualifiedName, decl.modelName))
 	}
 
-	def dispatch void infer(TUExecution exec, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(XUExecution exec, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(exec.toClass(exec.fullyQualifiedName)) [
 			documentation = exec.documentation
 			visibility = JvmVisibility.PUBLIC
@@ -87,11 +87,11 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def dispatch void infer(TUAssociation assoc, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(XUAssociation assoc, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(assoc.toClass(assoc.fullyQualifiedName)) [
 			documentation = assoc.documentation
 			superTypes += switch assoc {
-				TUComposition: Composition
+				XUComposition: Composition
 				default: Association
 			}.typeRef
 
@@ -105,7 +105,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 
-	def dispatch void infer(TUSignal signal, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(XUSignal signal, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(signal.toClass(signal.fullyQualifiedName)) [
 			documentation = signal.documentation
 			superTypes += Signal.typeRef
@@ -130,7 +130,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def dispatch void infer(TUClass tUClass, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(XUClass tUClass, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(tUClass.toClass(tUClass.fullyQualifiedName)) [
 			documentation = tUClass.documentation
 			if (tUClass.superClass != null) {
@@ -140,22 +140,22 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 			}
 
 			for (member : tUClass.members) {
-				if (member instanceof TUState || member instanceof TUPort) {
+				if (member instanceof XUState || member instanceof XUPort) {
 					members += member.inferredType as JvmMember
-				} else if (!(member instanceof TUAttributeOrOperationDeclarationPrefix)) { // TODO refactor grammar
+				} else if (!(member instanceof XUDeclarationPrefix)) { // TODO refactor grammar
 					members += member.toJvmMember
 				}
 			}
 		]
 
 		for (member : tUClass.members) {
-			if (member instanceof TUState || member instanceof TUPort) {
+			if (member instanceof XUState || member instanceof XUPort) {
 				register(member, acceptor, isPreIndexingPhase)
 			}
 		}
 	}
 
-	def dispatch void infer(TUConnector connector, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(XUConnector connector, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(connector.toClass(connector.fullyQualifiedName)) [
 			documentation = connector.documentation
 			superTypes += if (connector.delegation) {
@@ -174,7 +174,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 
-	def dispatch void infer(TUInterface iFace, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(XUInterface iFace, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(iFace.toClass(iFace.fullyQualifiedName)) [
 			documentation = iFace.documentation
 
@@ -187,7 +187,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def private dispatch void register(TUAssociationEnd assocEnd, IJvmDeclaredTypeAcceptor acceptor,
+	def private dispatch void register(XUAssociationEnd assocEnd, IJvmDeclaredTypeAcceptor acceptor,
 		boolean isPreIndexingPhase) {
 		acceptor.register(assocEnd, assocEnd.toClass(assocEnd.fullyQualifiedName)) [
 			documentation = assocEnd.documentation
@@ -205,7 +205,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def private dispatch void register(TUPort port, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def private dispatch void register(XUPort port, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.register(port, port.toClass(port.fullyQualifiedName)) [
 			documentation = port.documentation
 			visibility = JvmVisibility.PUBLIC
@@ -221,7 +221,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def private dispatch void register(TUState state, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def private dispatch void register(XUState state, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.register(state, state.toClass(state.fullyQualifiedName)) [
 			documentation = state.documentation
 			superTypes += switch (state.type) {
@@ -232,7 +232,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 			}
 
 			for (member : state.members) {
-				if (member instanceof TUState) {
+				if (member instanceof XUState) {
 					members += member.inferredType as JvmMember
 				} else {
 					members += member.toJvmMember
@@ -241,13 +241,13 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 
 		for (member : state.members) {
-			if (member instanceof TUState) {
+			if (member instanceof XUState) {
 				register(member, acceptor, isPreIndexingPhase)
 			}
 		}
 	}
 
-	def private dispatch void register(TUConnectorEnd connEnd, IJvmDeclaredTypeAcceptor acceptor,
+	def private dispatch void register(XUConnectorEnd connEnd, IJvmDeclaredTypeAcceptor acceptor,
 		boolean isPreIndexingPhase) {
 		acceptor.register(connEnd, connEnd.toClass(connEnd.fullyQualifiedName)) [
 			documentation = connEnd.documentation
@@ -256,7 +256,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def dispatch private toJvmMember(TUConstructor ctor) {
+	def dispatch private toJvmMember(XUConstructor ctor) {
 		ctor.toConstructor [
 			documentation = ctor.documentation
 			visibility = ctor.visibility.toJvmVisibility
@@ -271,21 +271,21 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def dispatch private toJvmMember(TUAttribute attr) {
+	def dispatch private toJvmMember(XUAttribute attr) {
 		attr.toField(attr.name, attr.prefix.type) [
 			documentation = attr.documentation
 			visibility = attr.prefix.visibility.toJvmVisibility
 		]
 	}
 
-	def dispatch private toJvmMember(TUSignalAttribute attr) {
+	def dispatch private toJvmMember(XUSignalAttribute attr) {
 		attr.toField(attr.name, attr.type) [
 			documentation = attr.documentation
 			visibility = attr.visibility.toJvmVisibility
 		]
 	}
 
-	def dispatch private toJvmMember(TUOperation op) {
+	def dispatch private toJvmMember(XUOperation op) {
 		op.toMethod(op.name, op.prefix.type) [
 			documentation = op.documentation
 			visibility = op.prefix.visibility.toJvmVisibility
@@ -300,7 +300,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def dispatch private toJvmMember(TUEntryOrExitActivity act) {
+	def dispatch private toJvmMember(XUEntryOrExitActivity act) {
 		val name = if(act.entry) "entry" else "exit"
 
 		return act.toMethod(name, Void.TYPE.typeRef) [
@@ -311,18 +311,18 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def dispatch private JvmMember toJvmMember(TUTransition trans) {
+	def dispatch private JvmMember toJvmMember(XUTransition trans) {
 		trans.toClass(trans.fullyQualifiedName) [
 			documentation = trans.documentation
 			superTypes += StateMachine.Transition.typeRef
 
 			for (member : trans.members) {
 				switch (member) {
-					TUTransitionTrigger,
-					TUTransitionVertex: {
+					XUTransitionTrigger,
+					XUTransitionVertex: {
 						annotations += member.toAnnotationRef
 					}
-					TUTransitionPort: {
+					XUTransitionPort: {
 					} // do nothing, handled together with triggers
 					default: {
 						members += member.toJvmMember
@@ -332,7 +332,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def dispatch private toJvmMember(TUTransitionEffect effect) {
+	def dispatch private toJvmMember(XUTransitionEffect effect) {
 		effect.toMethod("effect", Void.TYPE.typeRef) [
 			documentation = effect.documentation
 			visibility = JvmVisibility.PUBLIC
@@ -341,7 +341,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def dispatch private toJvmMember(TUTransitionGuard guard) {
+	def dispatch private toJvmMember(XUTransitionGuard guard) {
 		guard.toMethod("guard", Boolean.TYPE.typeRef) [
 			documentation = guard.documentation
 			visibility = JvmVisibility.PUBLIC
@@ -355,7 +355,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def dispatch private toJvmMember(TUReception reception) {
+	def dispatch private toJvmMember(XUReception reception) {
 		reception.toMethod("reception", Void.TYPE.typeRef) [
 			visibility = JvmVisibility.DEFAULT
 			documentation = reception.documentation
@@ -363,15 +363,15 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def private toJvmVisibility(TUVisibility it) {
-		if (it == TUVisibility.PACKAGE)
+	def private toJvmVisibility(XUVisibility it) {
+		if (it == XUVisibility.PACKAGE)
 			JvmVisibility.DEFAULT
 		else
 			JvmVisibility.getByName(getName())
 	}
 
-	def dispatch private toAnnotationRef(TUTransitionTrigger it) {
-		val port = (eContainer as TUTransition).members.findFirst[it instanceof TUTransitionPort] as TUTransitionPort
+	def dispatch private toAnnotationRef(XUTransitionTrigger it) {
+		val port = (eContainer as XUTransition).members.findFirst[it instanceof XUTransitionPort] as XUTransitionPort
 
 		createAnnotationRef(Trigger, if (port != null) {
 			#["port" -> port.port, "value" -> trigger]
@@ -380,7 +380,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		})
 	}
 
-	def dispatch private toAnnotationRef(TUTransitionVertex it) {
+	def dispatch private toAnnotationRef(XUTransitionVertex it) {
 		createAnnotationRef(
 			if (from) {
 				From
@@ -413,7 +413,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	def private calculateApiSuperType(TUAssociationEnd it) {
+	def private calculateApiSuperType(XUAssociationEnd it) {
 		val endClassTypeParam = endClass.inferredTypeRef
 		if (isContainer) {
 			// Do not try to simplify the code here, as it breaks standalone builds.
@@ -465,7 +465,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 
-	def private toInterfaceTypeRef(TUPortMember portMember) {
+	def private toInterfaceTypeRef(XUPortMember portMember) {
 		if (portMember?.interface != null) {
 			portMember.interface.inferredTypeRef
 		} else {

@@ -6,12 +6,9 @@ import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
 
 class XtxtUMLXImportSectionNamespaceScopeProvider extends XImportSectionNamespaceScopeProvider {
 
-	static final QualifiedName TXTUML_LIBRARY = QualifiedName::create("hu", "elte", "txtuml", "xtxtuml", "lib")
-
 	override protected getImplicitImports(boolean ignoreCase) {
 		#[
-			doCreateImportNormalizer(JAVA_LANG, true, false),
-			doCreateImportNormalizer(TXTUML_LIBRARY, true, false)
+			doCreateImportNormalizer(JAVA_LANG, true, false)
 		]
 	}
 

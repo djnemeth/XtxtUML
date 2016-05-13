@@ -1,7 +1,7 @@
 package hu.elte.txtuml.xtxtuml.ui.contentassist
 
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttributeOrOperationDeclarationPrefix
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeclarationPrefix
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.jface.viewers.StyledString
@@ -21,7 +21,7 @@ class XtxtUMLProposalProvider extends AbstractXtxtUMLProposalProvider {
 			acceptor.accept(createCompletionProposal(it, new StyledString(it), getImage(null), context));
 		]
 
-		if (model instanceof TUClass || model instanceof TUAttributeOrOperationDeclarationPrefix) {
+		if (model instanceof XUClass || model instanceof XUDeclarationPrefix) {
 			acceptor.accept(createCompletionProposal("void", new StyledString("void"), getImage(null), context));
 		}
 	}

@@ -1,11 +1,11 @@
 package hu.elte.txtuml.xtxtuml.ui.highlighting;
 
 import com.google.inject.Inject
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConstructor
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUMultiplicity
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUOperation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignalAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConstructor
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUMultiplicity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.xtext.documentation.impl.MultiLineCommentDocumentationProvider
@@ -28,19 +28,19 @@ class XtxtUMLHighlightingCalculator extends XbaseHighlightingCalculator {
 		highlightDocumentationComment(object, acceptor);
 
 		switch (object) {
-			TUAttribute:
-				highlightFeature(acceptor, object, TU_ATTRIBUTE__NAME, FIELD)
-			TUSignalAttribute:
-				highlightFeature(acceptor, object, TU_SIGNAL_ATTRIBUTE__NAME, FIELD)
-			TUConstructor:
+			XUAttribute:
+				highlightFeature(acceptor, object, XU_ATTRIBUTE__NAME, FIELD)
+			XUSignalAttribute:
+				highlightFeature(acceptor, object, XU_SIGNAL_ATTRIBUTE__NAME, FIELD)
+			XUConstructor:
 				object.parameters.forEach [
 					highlightFeature(acceptor, it, JVM_FORMAL_PARAMETER__NAME, FORMAL_PARAMETER)
 				]
-			TUOperation:
+			XUOperation:
 				object.parameters.forEach [
 					highlightFeature(acceptor, it, JVM_FORMAL_PARAMETER__NAME, FORMAL_PARAMETER)
 				]
-			TUMultiplicity: {
+			XUMultiplicity: {
 				val textRegion = NodeModelUtils.findActualNodeFor(object).textRegion;
 				acceptor.addPosition(textRegion.offset, textRegion.length, MULTIPLICITY);
 			}

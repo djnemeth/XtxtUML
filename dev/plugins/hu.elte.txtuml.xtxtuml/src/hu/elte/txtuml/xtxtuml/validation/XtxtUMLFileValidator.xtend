@@ -1,6 +1,6 @@
 package hu.elte.txtuml.xtxtuml.validation;
 
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUModelDeclaration
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUModelDeclaration
 import java.util.List
 import java.util.Map
 import org.eclipse.xtext.validation.Check
@@ -12,11 +12,11 @@ import static hu.elte.txtuml.xtxtuml.xtxtUML.XtxtUMLPackage.Literals.*
 class XtxtUMLFileValidator extends XtxtUMLExpressionValidator {
 
 	@Check
-	def checkModelDeclarationIsInModelInfoFile(TUModelDeclaration modelDeclaration) {
+	def checkModelDeclarationIsInModelInfoFile(XUModelDeclaration modelDeclaration) {
 		var name = modelDeclaration.eResource?.URI?.lastSegment ?: "";
 		if (name != "model-info.xtxtuml") {
 			error('Model declaration must be specified in "model-info.xtxtuml"', modelDeclaration,
-				TU_MODEL_DECLARATION__MODEL, MISPLACED_MODEL_DECLARATION);
+				XU_MODEL_DECLARATION__MODEL, MISPLACED_MODEL_DECLARATION);
 		}
 	}
 

@@ -1,32 +1,32 @@
 package hu.elte.txtuml.xtxtuml.ui.labeling
 
 import com.google.inject.Inject
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociationEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUComposition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnector
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnectorEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConstructor
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUEntryOrExitActivity
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUExecution
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUFile
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUInterface
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUModelDeclaration
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUOperation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPortMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUReception
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignal
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignalAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUState
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionEffect
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionGuard
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionTrigger
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionVertex
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociationEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUComposition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnector
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnectorEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConstructor
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUEntryOrExitActivity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUExecution
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUFile
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUInterface
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUModelDeclaration
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPortMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUReception
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignal
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUState
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionEffect
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionGuard
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionTrigger
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionVertex
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.jface.viewers.StyledString
 import org.eclipse.xtext.common.types.JvmGenericType
@@ -56,63 +56,63 @@ class XtxtUMLLabelProvider extends XbaseLabelProvider {
 		}
 	}
 
-	def image(TUFile it) {
+	def image(XUFile it) {
 		"uml2/Package.gif"
 	}
 
-	def image(TUModelDeclaration it) {
+	def image(XUModelDeclaration it) {
 		"uml2/Model.gif"
 	}
 
-	def image(TUExecution it) {
+	def image(XUExecution it) {
 		"execution.gif"
 	}
 
-	def image(TUClass it) {
+	def image(XUClass it) {
 		"uml2/Class.gif"
 	}
 
-	def image(TUSignal it) {
+	def image(XUSignal it) {
 		"uml2/Signal.gif"
 	}
 
-	def image(TUSignalAttribute it) {
+	def image(XUSignalAttribute it) {
 		"uml2/Property.gif"
 	}
 
-	def text(TUSignalAttribute it) {
+	def text(XUSignalAttribute it) {
 		createStyledOutlineText(name, type.simpleName)
 	}
 
-	def image(TUInterface it) {
+	def image(XUInterface it) {
 		"uml2/Interface.gif"
 	}
 
-	def image(TUReception it) {
+	def image(XUReception it) {
 		"uml2/Reception.gif"
 	}
 
-	def text(TUReception it) {
+	def text(XUReception it) {
 		createStyledOutlineText("reception", signal.name)
 	}
 
-	def image(TUAssociation it) {
-		if (it instanceof TUComposition) {
+	def image(XUAssociation it) {
+		if (it instanceof XUComposition) {
 			"uml2/Association_composite.gif"
 		} else {
 			"uml2/Association.gif"
 		}
 	}
 
-	def image(TUAssociationEnd it) {
+	def image(XUAssociationEnd it) {
 		"uml2/Property.gif"
 	}
 
-	def text(TUAssociationEnd it) {
+	def text(XUAssociationEnd it) {
 		createStyledOutlineText(name, multiplicityAsString + " " + endClass.name + propertiesAsString)
 	}
 
-	def image(TUConnector it) {
+	def image(XUConnector it) {
 		if (delegation) {
 			"uml2/Connector_delegation.gif"
 		} else {
@@ -120,27 +120,27 @@ class XtxtUMLLabelProvider extends XbaseLabelProvider {
 		}
 	}
 
-	def image(TUConnectorEnd it) {
+	def image(XUConnectorEnd it) {
 		"uml2/ConnectorEnd.gif"
 	}
 
-	def text(TUConnectorEnd it) {
+	def text(XUConnectorEnd it) {
 		createStyledOutlineText(name, role?.name + "->" + port?.name)
 	}
 
-	def image(TUAttribute it) {
+	def image(XUAttribute it) {
 		"uml2/Property.gif"
 	}
 
-	def text(TUAttribute it) {
+	def text(XUAttribute it) {
 		createStyledOutlineText(name, prefix.type.simpleName)
 	}
 
-	def image(TUConstructor it) {
+	def image(XUConstructor it) {
 		"uml2/Operation.gif"
 	}
 
-	def text(TUConstructor it) {
+	def text(XUConstructor it) {
 		val parameterList = if (parameters.empty) {
 				"()"
 			} else {
@@ -150,15 +150,15 @@ class XtxtUMLLabelProvider extends XbaseLabelProvider {
 		return new StyledString(name + parameterList)
 	}
 
-	def image(TUOperation it) {
+	def image(XUOperation it) {
 		"uml2/Operation.gif"
 	}
 
-	def text(TUOperation it) {
+	def text(XUOperation it) {
 		it.text(false) // `it` cannot be omitted here because of incorrect resolution
 	}
 
-	def text(TUOperation it, boolean showNames) {
+	def text(XUOperation it, boolean showNames) {
 		val parameterList = if (parameters.empty) {
 				"()"
 			} else {
@@ -168,11 +168,11 @@ class XtxtUMLLabelProvider extends XbaseLabelProvider {
 		createStyledOutlineText(name + parameterList, prefix.type.simpleName)
 	}
 
-	def image(TUPort it) {
+	def image(XUPort it) {
 		"uml2/Port.gif"
 	}
 
-	def text(TUPort it) {
+	def text(XUPort it) {
 		var text = new StyledString(name);
 		if (behavior) {
 			text = text.append(new StyledString(
@@ -184,15 +184,15 @@ class XtxtUMLLabelProvider extends XbaseLabelProvider {
 		return text;
 	}
 
-	def image(TUPortMember it) {
+	def image(XUPortMember it) {
 		"uml2/Property.gif"
 	}
 
-	def text(TUPortMember it) {
+	def text(XUPortMember it) {
 		createStyledOutlineText(if(required) "required" else "provided", interface.name)
 	}
 
-	def image(TUState it) {
+	def image(XUState it) {
 		switch (type) {
 			case PLAIN,
 			case COMPOSITE: "uml2/State.gif"
@@ -201,59 +201,59 @@ class XtxtUMLLabelProvider extends XbaseLabelProvider {
 		}
 	}
 
-	def image(TUEntryOrExitActivity it) {
+	def image(XUEntryOrExitActivity it) {
 		"uml2/Activity.gif"
 	}
 
-	def text(TUEntryOrExitActivity it) {
+	def text(XUEntryOrExitActivity it) {
 		if(entry) "entry" else "exit"
 	}
 
-	def image(TUTransition it) {
+	def image(XUTransition it) {
 		"uml2/Transition.gif"
 	}
 
-	def image(TUTransitionEffect it) {
+	def image(XUTransitionEffect it) {
 		"uml2/Activity.gif"
 	}
 
-	def text(TUTransitionEffect it) {
+	def text(XUTransitionEffect it) {
 		"effect"
 	}
 
-	def image(TUTransitionGuard it) {
+	def image(XUTransitionGuard it) {
 		"uml2/Constraint.gif"
 	}
 
-	def text(TUTransitionGuard it) {
+	def text(XUTransitionGuard it) {
 		"guard"
 	}
 
-	def image(TUTransitionVertex it) {
+	def image(XUTransitionVertex it) {
 		"uml2/Property.gif"
 	}
 
-	def text(TUTransitionVertex it) {
+	def text(XUTransitionVertex it) {
 		createStyledOutlineText(if(from) "from" else "to", vertex.name)
 	}
 
-	def image(TUTransitionTrigger it) {
+	def image(XUTransitionTrigger it) {
 		"uml2/Trigger.gif"
 	}
 
-	def text(TUTransitionTrigger it) {
+	def text(XUTransitionTrigger it) {
 		createStyledOutlineText("trigger", trigger.name)
 	}
 
-	def image(TUTransitionPort it) {
+	def image(XUTransitionPort it) {
 		"uml2/Port.gif"
 	}
 
-	def text(TUTransitionPort it) {
+	def text(XUTransitionPort it) {
 		createStyledOutlineText("port", port.name)
 	}
 
-	def private multiplicityAsString(TUAssociationEnd it) {
+	def private multiplicityAsString(XUAssociationEnd it) {
 		if (container) {
 			"0..1"
 		} else if (multiplicity == null) {
@@ -269,7 +269,7 @@ class XtxtUMLLabelProvider extends XbaseLabelProvider {
 		}
 	}
 
-	def private propertiesAsString(TUAssociationEnd it) {
+	def private propertiesAsString(XUAssociationEnd it) {
 		if (notNavigable || container) {
 			var propString = " (";
 

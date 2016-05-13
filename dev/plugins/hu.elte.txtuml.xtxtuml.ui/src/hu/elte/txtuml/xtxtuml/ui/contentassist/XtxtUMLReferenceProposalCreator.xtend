@@ -9,24 +9,24 @@ import hu.elte.txtuml.api.model.Signal
 import hu.elte.txtuml.api.model.external.ExternalType
 import hu.elte.txtuml.xtxtuml.common.XtxtUMLReferenceProposalScopeProvider
 import hu.elte.txtuml.xtxtuml.common.XtxtUMLUtils
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociationEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttributeOrOperationDeclarationPrefix
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClassPropertyAccessExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUComposition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnector
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnectorEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUOperation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignal
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignalAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUState
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUStateType
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionTrigger
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionVertex
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociationEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassPropertyAccessExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUComposition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnector
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnectorEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeclarationPrefix
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignal
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUState
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStateType
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionTrigger
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionVertex
 import hu.elte.txtuml.xtxtuml.xtxtUML.XtxtUMLPackage
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -81,19 +81,19 @@ class XtxtUMLReferenceProposalCreator extends XbaseReferenceProposalCreator {
 
 	override queryScope(IScope scope, EObject model, EReference ref, Predicate<IEObjectDescription> filter) {
 		switch (ref) {
-			case XtxtUMLPackage::eINSTANCE.TUConnectorEnd_Role:
+			case XtxtUMLPackage::eINSTANCE.XUConnectorEnd_Role:
 				scope.selectCompositionEnds(model)
-			case XtxtUMLPackage::eINSTANCE.TUConnectorEnd_Port:
+			case XtxtUMLPackage::eINSTANCE.XUConnectorEnd_Port:
 				scope.selectOwnedPorts(model)
-			case XtxtUMLPackage::eINSTANCE.TUTransitionPort_Port:
+			case XtxtUMLPackage::eINSTANCE.XUTransitionPort_Port:
 				scope.selectOwnedBehaviorPorts(model)
-			case XtxtUMLPackage::eINSTANCE.TUTransitionTrigger_Trigger:
+			case XtxtUMLPackage::eINSTANCE.XUTransitionTrigger_Trigger:
 				scope.selectApplicableTriggers(model)
-			case XtxtUMLPackage::eINSTANCE.TUTransitionVertex_Vertex:
+			case XtxtUMLPackage::eINSTANCE.XUTransitionVertex_Vertex:
 				scope.selectOwnedStates(model)
-			case XtxtUMLPackage::eINSTANCE.TUClassPropertyAccessExpression_Right:
+			case XtxtUMLPackage::eINSTANCE.XUClassPropertyAccessExpression_Right:
 				scope.selectNavigableClassProperties(model)
-			case XtxtUMLPackage::eINSTANCE.TUClass_SuperClass:
+			case XtxtUMLPackage::eINSTANCE.XUClass_SuperClass:
 				scope.selectExtendableClasses(model)
 			case XbasePackage::eINSTANCE.XAbstractFeatureCall_Feature:
 				scope.selectAllowedFeatures(model, ref, filter)
@@ -103,15 +103,15 @@ class XtxtUMLReferenceProposalCreator extends XbaseReferenceProposalCreator {
 	}
 
 	def private selectCompositionEnds(IScope scope, EObject model) {
-		if (model instanceof TUConnector || model instanceof TUConnectorEnd) {
+		if (model instanceof XUConnector || model instanceof XUConnectorEnd) {
 			scope.allElements.filter [
-				EContainerDescription.EObjectOrProxy instanceof TUComposition
+				EContainerDescription.EObjectOrProxy instanceof XUComposition
 			]
 		}
 	}
 
 	def private selectOwnedPorts(IScope scope, EObject model) {
-		if (model instanceof TUConnectorEnd) {
+		if (model instanceof XUConnectorEnd) {
 			val roleClassName = model.role?.endClass?.fullyQualifiedName;
 			return scope.allElements.filter [
 				EContainerDescription.qualifiedName == roleClassName
@@ -120,20 +120,20 @@ class XtxtUMLReferenceProposalCreator extends XbaseReferenceProposalCreator {
 	}
 
 	def private selectOwnedBehaviorPorts(IScope scope, EObject model) {
-		if (model instanceof TUTransitionPort) {
-			val containerClassName = EcoreUtil2.getContainerOfType(model, TUClass).fullyQualifiedName;
+		if (model instanceof XUTransitionPort) {
+			val containerClassName = EcoreUtil2.getContainerOfType(model, XUClass).fullyQualifiedName;
 			return scope.allElements.filter [
-				val port = EObjectOrProxy as TUPort;
+				val port = EObjectOrProxy as XUPort;
 				return port != null && port.behavior && EContainerDescription.qualifiedName == containerClassName;
 			]
 		}
 	}
 
 	def private selectApplicableTriggers(IScope scope, EObject model) {
-		if (model instanceof TUTransitionTrigger && model.eContainer instanceof TUTransition) {
-			val transPort = (model.eContainer as TUTransition).members?.findFirst [
-				it instanceof TUTransitionPort
-			] as TUTransitionPort;
+		if (model instanceof XUTransitionTrigger && model.eContainer instanceof XUTransition) {
+			val transPort = (model.eContainer as XUTransition).members?.findFirst [
+				it instanceof XUTransitionPort
+			] as XUTransitionPort;
 
 			if (transPort != null) { // check if port is specified
 				val providedIFace = transPort.port?.members?.findFirst[!required];
@@ -148,23 +148,23 @@ class XtxtUMLReferenceProposalCreator extends XbaseReferenceProposalCreator {
 	}
 
 	def private selectOwnedStates(IScope scope, EObject model) {
-		if (model instanceof TUTransitionVertex) {
+		if (model instanceof XUTransitionVertex) {
 			val transContainerName = model.eContainer?.eContainer?.fullyQualifiedName;
 			return scope.allElements.filter [
 				EContainerDescription.qualifiedName == transContainerName &&
-					(model.from || (EObjectOrProxy as TUState).type != TUStateType.INITIAL)
+					(model.from || (EObjectOrProxy as XUState).type != XUStateType.INITIAL)
 			];
 		}
 	}
 
 	def private selectNavigableClassProperties(IScope scope, EObject model) {
-		if (model instanceof TUClassPropertyAccessExpression) {
+		if (model instanceof XUClassPropertyAccessExpression) {
 			val containerClassName = model.left.resolveTypes.getActualType(model.left).type.fullyQualifiedName;
 			return scope.allElements.filter [ descr |
 				switch (proposedObj : descr.EObjectOrProxy) {
-					TUPort:
+					XUPort:
 						descr.EContainerDescription.qualifiedName == containerClassName
-					TUAssociationEnd:
+					XUAssociationEnd:
 						!proposedObj.notNavigable && descr.endsOfEnclosingAssociation.exists [
 							endClass?.fullyQualifiedName == containerClassName &&
 								fullyQualifiedName != descr.qualifiedName
@@ -180,7 +180,7 @@ class XtxtUMLReferenceProposalCreator extends XbaseReferenceProposalCreator {
 		val container = assocEndDescription.EObjectOrProxy.eContainer ?:
 			assocEndDescription.EContainerDescription.EObjectOrProxy;
 
-		return if (container instanceof TUAssociation) {
+		return if (container instanceof XUAssociation) {
 			container.ends
 		} else {
 			newArrayList
@@ -188,7 +188,7 @@ class XtxtUMLReferenceProposalCreator extends XbaseReferenceProposalCreator {
 	}
 
 	def private selectExtendableClasses(IScope scope, EObject model) {
-		if (model instanceof TUClass) {
+		if (model instanceof XUClass) {
 			val selfName = model.fullyQualifiedName;
 			return scope.allElements.filter [
 				qualifiedName != selfName
@@ -222,11 +222,11 @@ class XtxtUMLReferenceProposalCreator extends XbaseReferenceProposalCreator {
 
 	def private selectAllowedTypes(IScope scope, EObject model) {
 		val isClassAllowed = switch (model) {
-			TUSignal,
-			TUSignalAttribute: false
-			TUClass,
-			TUAttributeOrOperationDeclarationPrefix,
-			TUOperation,
+			XUSignal,
+			XUSignalAttribute: false
+			XUClass,
+			XUDeclarationPrefix,
+			XUOperation,
 			XBlockExpression,
 			XVariableDeclaration: true
 			default: null

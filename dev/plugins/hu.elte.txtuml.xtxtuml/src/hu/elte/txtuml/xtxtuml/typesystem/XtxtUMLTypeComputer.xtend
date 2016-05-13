@@ -5,19 +5,19 @@ import hu.elte.txtuml.api.model.Collection
 import hu.elte.txtuml.api.model.ModelClass
 import hu.elte.txtuml.api.model.Port
 import hu.elte.txtuml.api.model.Signal
-import hu.elte.txtuml.xtxtuml.xtxtUML.RAlfDeleteObjectExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.RAlfSendSignalExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.RAlfSignalAccessExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociationEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClassPropertyAccessExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUEntryOrExitActivity
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUState
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUStateType
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionTrigger
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionVertex
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociationEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassPropertyAccessExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeleteObjectExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUEntryOrExitActivity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSendSignalExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAccessExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUState
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStateType
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionTrigger
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionVertex
 import java.util.ArrayList
 import java.util.HashSet
 import org.eclipse.emf.common.util.EList
@@ -41,7 +41,7 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 	@Inject extension IJvmModelAssociations;
 	@Inject extension IQualifiedNameProvider;
 
-	def dispatch void computeTypes(TUClassPropertyAccessExpression accessExpr, ITypeComputationState state) {
+	def dispatch void computeTypes(XUClassPropertyAccessExpression accessExpr, ITypeComputationState state) {
 		// expectations for childs are enabled by default,
 		// see val foo = if (bar) foobar else baz
 		val childState = state.withoutRootExpectation;
@@ -57,7 +57,7 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 		}
 
 		switch (rightChild) {
-			TUAssociationEnd: {
+			XUAssociationEnd: {
 				val collectionOfAssocEndTypeRef = getTypeForName(Collection, state).
 					rawTypeReference as ParameterizedTypeReference;
 				collectionOfAssocEndTypeRef.addTypeArgument(
@@ -65,7 +65,7 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 
 				state.acceptActualType(collectionOfAssocEndTypeRef);
 			}
-			TUPort: {
+			XUPort: {
 				state.acceptActualType(state.nullSafeJvmElementTypeRef(rightChild, Port));
 			}
 		}
@@ -104,19 +104,19 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 		return null;
 	}
 
-	def dispatch computeTypes(RAlfSignalAccessExpression sigExpr, ITypeComputationState state) {
+	def dispatch computeTypes(XUSignalAccessExpression sigExpr, ITypeComputationState state) {
 		var container = sigExpr.eContainer;
-		while (container != null && !(container instanceof TUEntryOrExitActivity) &&
-			!(container instanceof TUTransition)) {
+		while (container != null && !(container instanceof XUEntryOrExitActivity) &&
+			!(container instanceof XUTransition)) {
 			container = container.eContainer;
 		}
 
-		var visitedStates = new HashSet<TUState>();
+		var visitedStates = new HashSet<XUState>();
 		var type = switch (container) {
-			TUEntryOrExitActivity:
-				if (container.eContainer instanceof TUState) {
+			XUEntryOrExitActivity:
+				if (container.eContainer instanceof XUState) {
 					getCommonSignalSuperType(
-						container.eContainer as TUState,
+						container.eContainer as XUState,
 						state,
 						container.entry,
 						visitedStates
@@ -124,7 +124,7 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 				} else {
 					getTypeForName(Signal, state)
 				}
-			TUTransition:
+			XUTransition:
 				getCommonSignalSuperType(container, state, visitedStates)
 			default:
 				getTypeForName(Signal, state)
@@ -134,23 +134,23 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 	}
 
 	def private LightweightTypeReference getCommonSignalSuperType(
-		TUTransition trans,
+		XUTransition trans,
 		ITypeComputationState cState,
-		HashSet<TUState> visitedStates
+		HashSet<XUState> visitedStates
 	) {
 		var trigger = (trans.members.findFirst [
-			it instanceof TUTransitionTrigger
-		] as TUTransitionTrigger)?.trigger;
+			it instanceof XUTransitionTrigger
+		] as XUTransitionTrigger)?.trigger;
 
 		if (trigger != null) {
 			return cState.nullSafeJvmElementTypeRef(trigger, Signal);
 		}
 
 		var from = (trans.members.findFirst [
-			it instanceof TUTransitionVertex && (it as TUTransitionVertex).from
-		] as TUTransitionVertex)?.vertex;
+			it instanceof XUTransitionVertex && (it as XUTransitionVertex).from
+		] as XUTransitionVertex)?.vertex;
 
-		if (from != null && from.type == TUStateType.CHOICE) {
+		if (from != null && from.type == XUStateType.CHOICE) {
 			return getCommonSignalSuperType(from, cState, true, visitedStates);
 		}
 
@@ -158,28 +158,28 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 	}
 
 	def private LightweightTypeReference getCommonSignalSuperType(
-		TUState state,
+		XUState state,
 		ITypeComputationState cState,
 		boolean toState,
-		HashSet<TUState> visitedStates
+		HashSet<XUState> visitedStates
 	) {
 		if (!visitedStates.add(state)) {
 			return getTypeForName(Signal, cState);
 		}
 
 		val siblingsAndSelf = switch (c : state.eContainer) {
-			TUState: c.members
-			TUClass: c.members
+			XUState: c.members
+			XUClass: c.members
 		}
 
 		var signalCandidates = new ArrayList<LightweightTypeReference>();
 		for (siblingOrSelf : siblingsAndSelf) {
-			if (siblingOrSelf instanceof TUTransition && ((siblingOrSelf as TUTransition).members.findFirst [
-				it instanceof TUTransitionVertex && toState != (it as TUTransitionVertex).from
-			] as TUTransitionVertex)?.vertex?.fullyQualifiedName == state.fullyQualifiedName) {
+			if (siblingOrSelf instanceof XUTransition && ((siblingOrSelf as XUTransition).members.findFirst [
+				it instanceof XUTransitionVertex && toState != (it as XUTransitionVertex).from
+			] as XUTransitionVertex)?.vertex?.fullyQualifiedName == state.fullyQualifiedName) {
 				signalCandidates.add(
 					getCommonSignalSuperType(
-						siblingOrSelf as TUTransition,
+						siblingOrSelf as XUTransition,
 						cState,
 						visitedStates
 					)
@@ -194,12 +194,12 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 		}
 	}
 
-	def dispatch computeTypes(RAlfDeleteObjectExpression deleteExpr, ITypeComputationState state) {
+	def dispatch computeTypes(XUDeleteObjectExpression deleteExpr, ITypeComputationState state) {
 		state.computeTypes(deleteExpr.object);
 		state.acceptActualType(state.getPrimitiveVoid);
 	}
 
-	def dispatch computeTypes(RAlfSendSignalExpression sendExpr, ITypeComputationState state) {
+	def dispatch computeTypes(XUSendSignalExpression sendExpr, ITypeComputationState state) {
 		state.computeTypes(sendExpr.signal);
 		state.computeTypes(sendExpr.target);
 		state.acceptActualType(state.getPrimitiveVoid);

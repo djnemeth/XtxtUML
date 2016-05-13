@@ -3,70 +3,71 @@
  */
 package hu.elte.txtuml.xtxtuml.ui.outline
 
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUOperation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUFile
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUExecution
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignalAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUEntryOrExitActivity
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociationEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociationEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConstructor
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUEntryOrExitActivity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUExecution
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUFile
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionEffect
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionGuard
+import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConstructor
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionEffect
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionGuard
 
 /**
  * Customization of the default outline structure.
  *
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#outline
  */
-class XtxtUMLOutlineTreeProvider extends org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider {
-	
-	def _isLeaf(TUFile op) {
-		true
-	}
-	
-	def _isLeaf(TUExecution exec) {
-		true
-	}
-	
-	def _isLeaf(TUSignalAttribute sAttr) {
-		true
-	}
-	
-	def _isLeaf(TUAttribute attr) {
-		true
-	}
-	
-	def _isLeaf(TUConstructor ctor) {
-		true
-	}
-	
-	def _isLeaf(TUOperation op) {
-		true
-	}
-	
-	def _isLeaf(TUEntryOrExitActivity act) {
+class XtxtUMLOutlineTreeProvider extends DefaultOutlineTreeProvider {
+
+	def _isLeaf(XUFile op) {
 		true
 	}
 
-	def _isLeaf(TUAssociationEnd assocEnd) {
+	def _isLeaf(XUExecution exec) {
 		true
 	}
-	
-	def _isLeaf(TUTransitionEffect effect) {
+
+	def _isLeaf(XUSignalAttribute sAttr) {
 		true
 	}
-	
-	def _isLeaf(TUTransitionGuard guard) {
+
+	def _isLeaf(XUAttribute attr) {
 		true
 	}
-	
-	def _createChildren(DocumentRootNode rootNode, TUFile file) {
+
+	def _isLeaf(XUConstructor ctor) {
+		true
+	}
+
+	def _isLeaf(XUOperation op) {
+		true
+	}
+
+	def _isLeaf(XUEntryOrExitActivity act) {
+		true
+	}
+
+	def _isLeaf(XUAssociationEnd assocEnd) {
+		true
+	}
+
+	def _isLeaf(XUTransitionEffect effect) {
+		true
+	}
+
+	def _isLeaf(XUTransitionGuard guard) {
+		true
+	}
+
+	def _createChildren(DocumentRootNode rootNode, XUFile file) {
 		createNode(rootNode, file);
 		for (element : file.elements) {
 			createNode(rootNode, element);
 		}
 	}
-	
+
 }

@@ -1,36 +1,36 @@
 package hu.elte.txtuml.xtxtuml.formatting2;
 
-import hu.elte.txtuml.xtxtuml.xtxtUML.RAlfDeleteObjectExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.RAlfSendSignalExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAssociationEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUAttributeOrOperationDeclarationPrefix
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClass
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUClassPropertyAccessExpression
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUComposition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnector
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConnectorEnd
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUConstructor
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUEntryOrExitActivity
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUExecution
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUFile
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUInterface
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUModelDeclaration
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUMultiplicity
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUOperation
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUPortMember
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUReception
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignal
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUSignalAttribute
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUState
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransition
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionEffect
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionGuard
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionPort
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionTrigger
-import hu.elte.txtuml.xtxtuml.xtxtUML.TUTransitionVertex
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociationEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassPropertyAccessExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUComposition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnector
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConnectorEnd
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUConstructor
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeclarationPrefix
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeleteObjectExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUEntryOrExitActivity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUExecution
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUFile
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUInterface
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUModelDeclaration
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUMultiplicity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUPortMember
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUReception
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSendSignalExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignal
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUState
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransition
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionEffect
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionGuard
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionPort
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionTrigger
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionVertex
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -46,15 +46,15 @@ import static hu.elte.txtuml.xtxtuml.xtxtUML.XtxtUMLPackage.Literals.*
 
 class XtxtUMLFormatter extends XbaseFormatter {
 
-	def dispatch void format(TUModelDeclaration it, extension IFormattableDocument document) {
+	def dispatch void format(XUModelDeclaration it, extension IFormattableDocument document) {
 		regionForKeyword('model-package').prepend[noSpace].append[oneSpace];
 		regionForKeyword('as').surround[oneSpace];
-		regionForFeature(TU_MODEL_DECLARATION__SEMI_COLON).prepend[noSpace].append[newLine];
+		regionForFeature(XU_MODEL_DECLARATION__SEMI_COLON).prepend[noSpace].append[newLine];
 	}
 
-	def dispatch void format(TUFile it, extension IFormattableDocument document) {
+	def dispatch void format(XUFile it, extension IFormattableDocument document) {
 		regionForKeyword('package').prepend[noSpace];
-		regionForFeature(TU_FILE__NAME).prepend[oneSpace].append[noSpace];
+		regionForFeature(XU_FILE__NAME).prepend[oneSpace].append[noSpace];
 		regionForKeyword(';').append[newLines = 2];
 
 		format(importSection, document);
@@ -65,53 +65,53 @@ class XtxtUMLFormatter extends XbaseFormatter {
 		}
 	}
 
-	def dispatch void format(TUExecution it, extension IFormattableDocument document) {
+	def dispatch void format(XUExecution it, extension IFormattableDocument document) {
 		regionForKeyword('execution').prepend[noIndentation];
-		regionForFeature(TU_MODEL_ELEMENT__NAME).surround[oneSpace];
+		regionForFeature(XU_MODEL_ELEMENT__NAME).surround[oneSpace];
 		regionForKeyword(';').prepend[noSpace];
 
 		format(body, document);
 	}
 
-	def dispatch void format(TUSignal it, extension IFormattableDocument document) {
+	def dispatch void format(XUSignal it, extension IFormattableDocument document) {
 		formatBlockElement(it, document, regionForKeyword('signal'), attributes, false);
 	}
 
-	def dispatch void format(TUClass it, extension IFormattableDocument document) {
+	def dispatch void format(XUClass it, extension IFormattableDocument document) {
 		formatBlockElement(it, document, regionForKeyword('class'), members, true);
 		regionForKeyword('extends').surround[oneSpace];
 	}
 
-	def dispatch void format(TUAssociation it, extension IFormattableDocument document) {
+	def dispatch void format(XUAssociation it, extension IFormattableDocument document) {
 		formatBlockElement(it, document,
-			regionForKeyword(if(it instanceof TUComposition) 'composition' else 'association'), ends, false);
+			regionForKeyword(if(it instanceof XUComposition) 'composition' else 'association'), ends, false);
 	}
 
-	def dispatch void format(TUInterface it, extension IFormattableDocument document) {
+	def dispatch void format(XUInterface it, extension IFormattableDocument document) {
 		formatBlockElement(it, document, regionForKeyword('interface'), receptions, false);
 	}
 
-	def dispatch void format(TUReception it, extension IFormattableDocument document) {
-		formatSimpleMember(it, document, TU_RECEPTION__SIGNAL);
+	def dispatch void format(XUReception it, extension IFormattableDocument document) {
+		formatSimpleMember(it, document, XU_RECEPTION__SIGNAL);
 	}
 
-	def dispatch void format(TUConnector it, extension IFormattableDocument document) {
+	def dispatch void format(XUConnector it, extension IFormattableDocument document) {
 		formatBlockElement(it, document, regionForKeyword(if(delegation) 'delegation' else 'connector'), ends, false);
 	}
 
-	def dispatch void format(TUConnectorEnd it, extension IFormattableDocument document) {
+	def dispatch void format(XUConnectorEnd it, extension IFormattableDocument document) {
 		regionForKeyword('->').surround[noSpace];
-		regionForFeature(TU_CONNECTOR_END__NAME).prepend[oneSpace].append[noSpace];
+		regionForFeature(XU_CONNECTOR_END__NAME).prepend[oneSpace].append[noSpace];
 	}
 
-	def dispatch void format(TUSignalAttribute it, extension IFormattableDocument document) {
-		regionForFeature(TU_SIGNAL_ATTRIBUTE__VISIBILITY).append[oneSpace];
-		regionForFeature(TU_SIGNAL_ATTRIBUTE__NAME).prepend[oneSpace].append[noSpace];
+	def dispatch void format(XUSignalAttribute it, extension IFormattableDocument document) {
+		regionForFeature(XU_SIGNAL_ATTRIBUTE__VISIBILITY).append[oneSpace];
+		regionForFeature(XU_SIGNAL_ATTRIBUTE__NAME).prepend[oneSpace].append[noSpace];
 		format(type, document);
 	}
 
-	def dispatch void format(TUOperation it, extension IFormattableDocument document) {
-		regionForFeature(TU_OPERATION__NAME).prepend[oneSpace];
+	def dispatch void format(XUOperation it, extension IFormattableDocument document) {
+		regionForFeature(XU_OPERATION__NAME).prepend[oneSpace];
 		regionForKeyword('(').surround[noSpace];
 		regionForKeyword(')').prepend[noSpace].append[oneSpace];
 		regionsForKeywords(',').forEach[prepend[noSpace].append[oneSpace]];
@@ -123,8 +123,8 @@ class XtxtUMLFormatter extends XbaseFormatter {
 		}
 	}
 
-	def dispatch void format(TUConstructor it, extension IFormattableDocument document) {
-		regionForFeature(TU_CONSTRUCTOR__VISIBILITY).append[oneSpace];
+	def dispatch void format(XUConstructor it, extension IFormattableDocument document) {
+		regionForFeature(XU_CONSTRUCTOR__VISIBILITY).append[oneSpace];
 		regionForKeyword('(').surround[noSpace];
 		regionForKeyword(')').prepend[noSpace].append[oneSpace];
 		regionsForKeywords(',').forEach[prepend[noSpace].append[oneSpace]];
@@ -135,36 +135,36 @@ class XtxtUMLFormatter extends XbaseFormatter {
 		}
 	}
 
-	def dispatch void format(TUAttributeOrOperationDeclarationPrefix it, extension IFormattableDocument document) {
-		regionForFeature(TU_ATTRIBUTE_OR_OPERATION_DECLARATION_PREFIX__VISIBILITY).append[oneSpace];
+	def dispatch void format(XUDeclarationPrefix it, extension IFormattableDocument document) {
+		regionForFeature(XU_DECLARATION_PREFIX__VISIBILITY).append[oneSpace];
 		format(type, document);
 	}
 
-	def dispatch void format(TUState it, extension IFormattableDocument document) {
-		formatBlockElement(it, document, regionForFeature(TU_STATE__TYPE), members, false);
+	def dispatch void format(XUState it, extension IFormattableDocument document) {
+		formatBlockElement(it, document, regionForFeature(XU_STATE__TYPE), members, false);
 	}
 
-	def dispatch void format(TUEntryOrExitActivity it, extension IFormattableDocument document) {
+	def dispatch void format(XUEntryOrExitActivity it, extension IFormattableDocument document) {
 		formatUnnamedBlockElement(it, document, body as XBlockExpression);
 	}
 
-	def dispatch void format(TUTransition it, extension IFormattableDocument document) {
+	def dispatch void format(XUTransition it, extension IFormattableDocument document) {
 		formatBlockElement(it, document, regionForKeyword('transition'), members, false);
 	}
 
-	def dispatch void format(TUTransitionTrigger it, extension IFormattableDocument document) {
-		formatSimpleMember(it, document, TU_TRANSITION_TRIGGER__TRIGGER);
+	def dispatch void format(XUTransitionTrigger it, extension IFormattableDocument document) {
+		formatSimpleMember(it, document, XU_TRANSITION_TRIGGER__TRIGGER);
 	}
 
-	def dispatch void format(TUTransitionVertex it, extension IFormattableDocument document) {
-		formatSimpleMember(it, document, TU_TRANSITION_VERTEX__VERTEX);
+	def dispatch void format(XUTransitionVertex it, extension IFormattableDocument document) {
+		formatSimpleMember(it, document, XU_TRANSITION_VERTEX__VERTEX);
 	}
 
-	def dispatch void format(TUTransitionEffect it, extension IFormattableDocument document) {
+	def dispatch void format(XUTransitionEffect it, extension IFormattableDocument document) {
 		formatUnnamedBlockElement(it, document, body as XBlockExpression);
 	}
 
-	def dispatch void format(TUTransitionGuard it, extension IFormattableDocument document) {
+	def dispatch void format(XUTransitionGuard it, extension IFormattableDocument document) {
 		regionForKeyword('(').surround[oneSpace];
 		expression.append[oneSpace];
 		regionForKeyword(';').prepend[noSpace];
@@ -172,36 +172,35 @@ class XtxtUMLFormatter extends XbaseFormatter {
 		format(expression, document);
 	}
 
-	def dispatch void format(TUTransitionPort it, extension IFormattableDocument document) {
-		formatSimpleMember(it, document, TU_TRANSITION_PORT__PORT);
+	def dispatch void format(XUTransitionPort it, extension IFormattableDocument document) {
+		formatSimpleMember(it, document, XU_TRANSITION_PORT__PORT);
 	}
 
-	def dispatch void format(TUPort it, extension IFormattableDocument document) {
+	def dispatch void format(XUPort it, extension IFormattableDocument document) {
 		regionForKeyword('behavior').append[oneSpace];
 		formatBlockElement(it, document, regionForKeyword('port'), members, false);
 	}
 
-	def dispatch void format(TUPortMember it, extension IFormattableDocument document) {
-		formatSimpleMember(it, document, TU_PORT_MEMBER__INTERFACE);
+	def dispatch void format(XUPortMember it, extension IFormattableDocument document) {
+		formatSimpleMember(it, document, XU_PORT_MEMBER__INTERFACE);
 	}
 
-	def dispatch void format(TUAssociationEnd it, extension IFormattableDocument document) {
-		regionForFeature(TU_ASSOCIATION_END__VISIBILITY).append[oneSpace];
+	def dispatch void format(XUAssociationEnd it, extension IFormattableDocument document) {
 		regionForKeyword('hidden').append[oneSpace];
 
 		multiplicity.append[oneSpace];
 
 		regionForKeyword('container').append[oneSpace];
-		regionForFeature(TU_CLASS_PROPERTY__NAME).prepend[oneSpace].append[noSpace];
+		regionForFeature(XU_CLASS_PROPERTY__NAME).prepend[oneSpace].append[noSpace];
 
 		format(multiplicity, document);
 	}
 
-	def dispatch void format(TUMultiplicity it, extension IFormattableDocument document) {
+	def dispatch void format(XUMultiplicity it, extension IFormattableDocument document) {
 		regionForKeyword('..').surround[noSpace];
 	}
 
-	def dispatch void format(RAlfSendSignalExpression it, extension IFormattableDocument document) {
+	def dispatch void format(XUSendSignalExpression it, extension IFormattableDocument document) {
 		signal.surround[oneSpace];
 		target.prepend[oneSpace];
 
@@ -209,7 +208,7 @@ class XtxtUMLFormatter extends XbaseFormatter {
 		format(target, document);
 	}
 
-	def dispatch void format(RAlfDeleteObjectExpression it, extension IFormattableDocument document) {
+	def dispatch void format(XUDeleteObjectExpression it, extension IFormattableDocument document) {
 		object.prepend[oneSpace];
 		format(object, document);
 	}
@@ -239,14 +238,14 @@ class XtxtUMLFormatter extends XbaseFormatter {
 		super._format(it, document); // generated _format is used to prevent infinite recursion
 	}
 
-	def dispatch void format(TUAttribute it, extension IFormattableDocument document) {
-		formatSimpleMember(it, document, TU_ATTRIBUTE__NAME);
+	def dispatch void format(XUAttribute it, extension IFormattableDocument document) {
+		formatSimpleMember(it, document, XU_ATTRIBUTE__NAME);
 		format(prefix, document);
 	}
 
-	def dispatch void format(TUClassPropertyAccessExpression it, extension IFormattableDocument document) {
+	def dispatch void format(XUClassPropertyAccessExpression it, extension IFormattableDocument document) {
 		regionForKeyword('->').surround[noSpace];
-		regionForFeature(TU_CLASS_PROPERTY_ACCESS_EXPRESSION__RIGHT).surround[noSpace];
+		regionForFeature(XU_CLASS_PROPERTY_ACCESS_EXPRESSION__RIGHT).surround[noSpace];
 
 		format(left, document);
 	}

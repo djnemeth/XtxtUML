@@ -27,7 +27,7 @@ class XtxtUMLLinkingDiagnosticMessageProvider extends LinkingDiagnosticMessagePr
 
 	def private humanReadableName(EClass type) {
 		if (type.EPackage.nsURI == XtxtUMLPackage.eNS_URI) {
-			type.name.split("(?=[A-Z])").drop(2).map[toLowerCase].join(" ") // e.g. "TUConnectorEnd" ~> "connector end"
+			type.name.split("(?=[A-Z])").drop(2).map[toLowerCase].join(" ") // e.g. "XUConnectorEnd" ~> "connector end"
 		} else {
 			switch (type) {
 				case TypesPackage.eINSTANCE.jvmType,
