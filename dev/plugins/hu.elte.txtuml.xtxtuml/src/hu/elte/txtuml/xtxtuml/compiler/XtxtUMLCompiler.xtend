@@ -6,8 +6,10 @@ import hu.elte.txtuml.api.model.Port
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUAssociationEnd
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassPropertyAccessExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeleteObjectExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XULogExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSendSignalExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAccessExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStartObjectExpression
 import org.eclipse.xtext.common.types.JvmType
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler
@@ -21,7 +23,9 @@ class XtxtUMLCompiler extends XbaseCompiler {
 	override protected doInternalToJavaStatement(XExpression obj, ITreeAppendable builder, boolean isReferenced) {
 		switch (obj) {
 			XUClassPropertyAccessExpression,
+			XUStartObjectExpression,
 			XUDeleteObjectExpression,
+			XULogExpression,
 			XUSendSignalExpression,
 			XUSignalAccessExpression:
 				obj.toJavaStatement(builder)
@@ -38,11 +42,27 @@ class XtxtUMLCompiler extends XbaseCompiler {
 		// intentionally left empty
 	}
 
+	def dispatch toJavaStatement(XUStartObjectExpression startExpr, ITreeAppendable it) {
+		newLine;
+		append(Action);
+		append(".start(")
+		startExpr.object.internalToJavaExpression(it);
+		append(");");
+	}
+
 	def dispatch toJavaStatement(XUDeleteObjectExpression deleteExpr, ITreeAppendable it) {
 		newLine;
 		append(Action);
 		append(".delete(")
 		deleteExpr.object.internalToJavaExpression(it);
+		append(");");
+	}
+
+	def dispatch toJavaStatement(XULogExpression logExpr, ITreeAppendable it) {
+		newLine;
+		append(Action);
+		append(".log(")
+		logExpr.message.internalToJavaExpression(it);
 		append(");");
 	}
 

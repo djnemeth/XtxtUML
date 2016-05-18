@@ -8,9 +8,11 @@ import hu.elte.txtuml.api.model.external.ExternalType
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassPropertyAccessExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeclarationPrefix
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeleteObjectExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XULogExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSendSignalExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStartObjectExpression
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmFormalParameter
@@ -72,9 +74,23 @@ class XtxtUMLTypeValidator extends XtxtUMLUniquenessValidator {
 	}
 
 	@Check
+	def checkStartObjectExpressionTypes(XUStartObjectExpression startExpr) {
+		if (!startExpr.object.isConformantWith(ModelClass, false)) {
+			typeMismatch("Class", startExpr, XU_START_OBJECT_EXPRESSION__OBJECT)
+		}
+	}
+
+	@Check
 	def checkDeleteObjectExpressionTypes(XUDeleteObjectExpression deleteExpr) {
 		if (!deleteExpr.object.isConformantWith(ModelClass, false)) {
 			typeMismatch("Class", deleteExpr, XU_DELETE_OBJECT_EXPRESSION__OBJECT)
+		}
+	}
+
+	@Check
+	def checkLogExpressionTypes(XULogExpression logExpr) {
+		if (!logExpr.message.actualType.isType(String)) {
+			typeMismatch("String", logExpr, XU_LOG_EXPRESSION__MESSAGE)
 		}
 	}
 

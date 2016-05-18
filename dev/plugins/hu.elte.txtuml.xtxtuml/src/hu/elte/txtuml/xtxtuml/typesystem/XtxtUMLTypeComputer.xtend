@@ -10,9 +10,11 @@ import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassPropertyAccessExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeleteObjectExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUEntryOrExitActivity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XULogExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUPort
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSendSignalExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAccessExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStartObjectExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUState
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUStateType
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransition
@@ -194,8 +196,18 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 		}
 	}
 
+	def dispatch computeTypes(XUStartObjectExpression startExpr, ITypeComputationState state) {
+		state.computeTypes(startExpr.object);
+		state.acceptActualType(state.getPrimitiveVoid);
+	}
+
 	def dispatch computeTypes(XUDeleteObjectExpression deleteExpr, ITypeComputationState state) {
 		state.computeTypes(deleteExpr.object);
+		state.acceptActualType(state.getPrimitiveVoid);
+	}
+
+	def dispatch computeTypes(XULogExpression logExpr, ITypeComputationState state) {
+		state.computeTypes(logExpr.message);
 		state.acceptActualType(state.getPrimitiveVoid);
 	}
 

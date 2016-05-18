@@ -9,11 +9,13 @@ import hu.elte.txtuml.xtxtuml.xtxtUML.XUClass
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUClassPropertyAccessExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUDeleteObjectExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUEntryOrExitActivity
+import hu.elte.txtuml.xtxtuml.xtxtUML.XULogExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUPort
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSendSignalExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignal
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAccessExpression
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStartObjectExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUState
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUStateType
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransition
@@ -232,6 +234,8 @@ class XtxtUMLExpressionValidator extends XtxtUMLTypeValidator {
 	override protected isValueExpectedRecursive(XExpression expr) {
 		val container = expr.eContainer;
 		return switch (container) {
+			XUStartObjectExpression,
+			XULogExpression,
 			XUSendSignalExpression,
 			XUDeleteObjectExpression: true
 			XBlockExpression: false

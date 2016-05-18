@@ -15,6 +15,7 @@ import hu.elte.txtuml.xtxtuml.xtxtUML.XUEntryOrExitActivity
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUExecution
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUFile
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUInterface
+import hu.elte.txtuml.xtxtuml.xtxtUML.XULogExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUModelDeclaration
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUMultiplicity
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUOperation
@@ -24,6 +25,7 @@ import hu.elte.txtuml.xtxtuml.xtxtUML.XUReception
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSendSignalExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignal
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUSignalAttribute
+import hu.elte.txtuml.xtxtuml.xtxtUML.XUStartObjectExpression
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUState
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransition
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUTransitionEffect
@@ -208,9 +210,19 @@ class XtxtUMLFormatter extends XbaseFormatter {
 		format(target, document);
 	}
 
+	def dispatch void format(XUStartObjectExpression it, extension IFormattableDocument document) {
+		object.prepend[oneSpace];
+		format(object, document);
+	}
+
 	def dispatch void format(XUDeleteObjectExpression it, extension IFormattableDocument document) {
 		object.prepend[oneSpace];
 		format(object, document);
+	}
+
+	def dispatch void format(XULogExpression it, extension IFormattableDocument document) {
+		message.prepend[oneSpace];
+		format(message, document);
 	}
 
 	override dispatch void format(XBlockExpression it, extension IFormattableDocument document) {

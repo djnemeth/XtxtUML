@@ -213,9 +213,19 @@ XUSendSignalExpression returns xbase::XExpression :
 	'send' signal=XExpression 'to' target=XExpression
 ;
 
+XUStartObjectExpression returns xbase::XExpression :
+	{XUStartObjectExpression}
+	'start' object=XExpression
+;
+
 XUDeleteObjectExpression returns xbase::XExpression :
 	{XUDeleteObjectExpression}
 	'delete' object=XExpression
+;
+
+XULogExpression returns xbase::XExpression :
+	{XULogExpression}
+	'log' message=XExpression
 ;
 
 XUSignalAccessExpression returns xbase::XExpression :
@@ -241,7 +251,9 @@ XUStatementSemicolonNeeded returns xbase::XExpression
 	| XDoWhileExpression
 	| XExpression
 	| XUSendSignalExpression
+	| XUStartObjectExpression
 	| XUDeleteObjectExpression
+	| XULogExpression
 ;
 
 XParenthesizedXUExpression returns xbase::XExpression :
