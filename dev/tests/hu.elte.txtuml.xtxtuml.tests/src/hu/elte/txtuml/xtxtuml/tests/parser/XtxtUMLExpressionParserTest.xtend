@@ -94,7 +94,7 @@ class XtxtUMLExpressionParserTest {
 					start this;
 					start new TestClass();
 			
-					TestSignal obj = new TestClass();
+					TestClass obj = new TestClass();
 					start obj;
 				}
 			}
@@ -178,7 +178,7 @@ class XtxtUMLExpressionParserTest {
 					to TestState;
 					trigger TestSignal;
 					effect {
-						log trigger.message
+						log trigger.message;
 					}
 				}
 			}

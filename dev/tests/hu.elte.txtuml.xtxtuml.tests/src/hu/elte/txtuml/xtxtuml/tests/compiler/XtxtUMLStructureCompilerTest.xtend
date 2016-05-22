@@ -424,7 +424,7 @@ class XtxtUMLStructureCompilerTest {
 	}
 
 	@Test
-	def parseComposition() {
+	def compileComposition() {
 		'''
 			package test.model;
 			class TestClass;
