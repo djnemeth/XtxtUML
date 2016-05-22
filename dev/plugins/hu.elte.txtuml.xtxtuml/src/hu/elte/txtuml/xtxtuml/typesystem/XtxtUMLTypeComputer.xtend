@@ -197,24 +197,24 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 	}
 
 	def dispatch computeTypes(XUStartObjectExpression startExpr, ITypeComputationState state) {
-		state.computeTypes(startExpr.object);
 		state.acceptActualType(state.getPrimitiveVoid);
+		state.withoutRootExpectation.computeTypes(startExpr.object);
 	}
 
 	def dispatch computeTypes(XUDeleteObjectExpression deleteExpr, ITypeComputationState state) {
-		state.computeTypes(deleteExpr.object);
 		state.acceptActualType(state.getPrimitiveVoid);
+		state.withoutRootExpectation.computeTypes(deleteExpr.object);
 	}
 
 	def dispatch computeTypes(XULogExpression logExpr, ITypeComputationState state) {
-		state.computeTypes(logExpr.message);
 		state.acceptActualType(state.getPrimitiveVoid);
+		state.withoutRootExpectation.computeTypes(logExpr.message);
 	}
 
 	def dispatch computeTypes(XUSendSignalExpression sendExpr, ITypeComputationState state) {
-		state.computeTypes(sendExpr.signal);
-		state.computeTypes(sendExpr.target);
 		state.acceptActualType(state.getPrimitiveVoid);
+		state.withoutRootExpectation.computeTypes(sendExpr.signal);
+		state.withoutRootExpectation.computeTypes(sendExpr.target);
 	}
 
 	override dispatch computeTypes(XBlockExpression block, ITypeComputationState state) {
