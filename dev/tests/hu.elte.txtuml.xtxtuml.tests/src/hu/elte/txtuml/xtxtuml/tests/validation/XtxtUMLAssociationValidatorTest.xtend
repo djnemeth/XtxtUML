@@ -3,7 +3,6 @@ package hu.elte.txtuml.xtxtuml.tests.validation;
 import com.google.inject.Inject
 import hu.elte.txtuml.xtxtuml.XtxtUMLInjectorProvider
 import hu.elte.txtuml.xtxtuml.xtxtUML.XUFile
-import hu.elte.txtuml.xtxtuml.xtxtUML.XtxtUMLPackage
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
@@ -12,6 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static hu.elte.txtuml.xtxtuml.validation.XtxtUMLIssueCodes.*
+import static hu.elte.txtuml.xtxtuml.xtxtUML.XtxtUMLPackage.Literals.*
 
 @RunWith(XtextRunner)
 @InjectWith(XtxtUMLInjectorProvider)
@@ -21,115 +21,66 @@ class XtxtUMLAssociationValidatorTest {
 	@Inject extension ValidationTestHelper
 
 	@Test
-	def void testAssociationWithTwoEnds() {
+	def checkAssociationHasExactlyTwoEnds() {
 		'''
-			package model.test;
-			
-			class A {}
-			class B {}
-			association A_B {
-				1 A a;
-				1 B b;
+			package test.model;
+			class A;
+			association AA {
+				A a1;
+				A a2;
 			}
-		'''.parse.assertNoErrors
+		'''.parse.assertNoErrors;
+
+		val file = '''
+			package test.model;
+			class A;
+			association A1 {}
+			association A2 {
+				A a1;
+			}
+			association A3 {
+				A a1;
+				A a2;
+				A a3;
+			}
+		'''.parse;
+
+		file.assertError(XU_ASSOCIATION, ASSOCIATION_END_COUNT_MISMATCH, 43, 2);
+		file.assertError(XU_ASSOCIATION, ASSOCIATION_END_COUNT_MISMATCH, 62, 2);
+		file.assertError(XU_ASSOCIATION, ASSOCIATION_END_COUNT_MISMATCH, 91, 2);
 	}
 
 	@Test
-	def void testAssociationWithOneEnd() {
+	def checkContainerEndIsAllowedAndNeededOnlyInComposition() {
 		'''
-			package model.test;
-			
-			class A {}
-			class B {}
-			association A_B {
-				1 A a;
+			package test.model;
+			class A;
+			composition C {
+				container A a1;
+				A a2;
 			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUAssociation, ASSOCIATION_END_COUNT_MISMATCH)
-	}
+		'''.parse.assertNoErrors;
 
-	@Test
-	def void testAssociationWithThreeEnds() {
-		'''
-			package model.test;
-			
-			class A {}
-			class B {}
-			association A_B {
-				1 A a;
-				1 B b;
-				1 B b2;
+		val file = '''
+			package test.model;
+			class A;
+			association AA {
+				container A a1;
+				A a2;
 			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUAssociation, ASSOCIATION_END_COUNT_MISMATCH)
-	}
+			composition C1 {
+				A a1;
+				A a2;
+			}
+			composition C2 {
+				container A a1;
+				container A a2;
+			}
+		'''.parse;
 
-	@Test
-	def void testAssociationWithNonUniqueEndNames() {
-		'''
-			package model.test;
-			
-			class A {}
-			class B {}
-			association A_B {
-				1 A a;
-				1 B a;
-			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUAssociationEnd, NOT_UNIQUE_NAME)
-	}
-
-	@Test
-	def void testAssociationWithContainerEnd() {
-		'''
-			package model.test;
-			
-			class A {}
-			class B {}
-			association A_B {
-				container A a;
-				1 B b;
-			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUAssociationEnd, CONTAINER_END_IN_ASSOCIATION)
-	}
-
-	@Test
-	def void testCompositionWithoutContainerEnd() {
-		'''
-			package model.test;
-			
-			class A {}
-			class B {}
-			composition A_B {
-				1 A a;
-				1 B b;
-			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUComposition, CONTAINER_END_COUNT_MISMATCH)
-	}
-
-	@Test
-	def void testCompositionWithTwoContainerEnds() {
-		'''
-			package model.test;
-			
-			class A {}
-			class B {}
-			composition A_B {
-				container A a;
-				container B b;
-			}
-		'''.parse.assertError(XtxtUMLPackage.eINSTANCE.XUComposition, CONTAINER_END_COUNT_MISMATCH)
-	}
-
-	@Test
-	def void testCompositionWithOneContainerEnd() {
-		'''
-			package model.test;
-			
-			class A {}
-			class B {}
-			composition A_B {
-				container A a;
-				1 B b;
-			}
-		'''.parse.assertNoErrors
+		file.assertError(XU_ASSOCIATION_END, CONTAINER_END_IN_ASSOCIATION, 50, 9);
+		file.assertError(XU_COMPOSITION, CONTAINER_END_COUNT_MISMATCH, 90, 2);
+		file.assertError(XU_COMPOSITION, CONTAINER_END_COUNT_MISMATCH, 127, 2);
 	}
 
 }
