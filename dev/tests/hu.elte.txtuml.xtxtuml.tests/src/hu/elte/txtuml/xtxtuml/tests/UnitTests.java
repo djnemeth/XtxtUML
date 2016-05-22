@@ -4,7 +4,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import hu.elte.txtuml.xtxtuml.tests.compiler.XtxtUMLCompilerTests;
+import hu.elte.txtuml.xtxtuml.tests.parser.XtxtUMLParserTests;
+import hu.elte.txtuml.xtxtuml.tests.validation.XtxtUMLValidatorTests;
+
 @RunWith(Suite.class)
-@SuiteClasses({ XtxtUMLAssociationValidatorTest.class, XtxtUMLCompilerTest.class, XtxtUMLParserTest.class })
+@SuiteClasses({ XtxtUMLParserTests.class, XtxtUMLValidatorTests.class, XtxtUMLCompilerTests.class })
 public class UnitTests {
 }

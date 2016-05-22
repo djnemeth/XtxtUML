@@ -1,4 +1,4 @@
-package hu.elte.txtuml.xtxtuml.tests;
+package hu.elte.txtuml.xtxtuml.tests.parser;
 
 import com.google.inject.Inject
 import hu.elte.txtuml.xtxtuml.XtxtUMLInjectorProvider
@@ -48,7 +48,7 @@ import static org.junit.Assert.*
 
 @RunWith(XtextRunner)
 @InjectWith(XtxtUMLInjectorProvider)
-class XtxtUMLParserTest {
+class XtxtUMLParserTests {
 
 	@Inject extension ParseHelper<XUFile>;
 
