@@ -5,6 +5,7 @@ import org.junit.runners.Suite
 import org.junit.runners.Suite.SuiteClasses
 
 @RunWith(Suite)
-@SuiteClasses(XtxtUMLUniquenessValidatorTest, XtxtUMLTypeValidatorTest, XtxtUMLAssociationValidatorTest)
+@SuiteClasses(XtxtUMLUniquenessValidatorTest, XtxtUMLTypeValidatorTest, XtxtUMLExpressionValidatorTest,
+	XtxtUMLAssociationValidatorTest)
 class XtxtUMLValidatorTests {
 }
