@@ -374,7 +374,7 @@ class XtxtUMLExpressionValidatorTest {
 	}
 
 	@Test
-	def checkOwnerOfAccessedClassProperty() {
+	def checkClassPropertyIsAccessible() {
 		val accessibleProperties = '''
 			package test.model;
 			class A {

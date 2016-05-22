@@ -6,6 +6,6 @@ import org.junit.runners.Suite.SuiteClasses
 
 @RunWith(Suite)
 @SuiteClasses(XtxtUMLUniquenessValidatorTest, XtxtUMLTypeValidatorTest, XtxtUMLExpressionValidatorTest,
-	XtxtUMLAssociationValidatorTest)
+	XtxtUMLAssociationValidatorTest, XtxtUMLFileValidatorTest)
 class XtxtUMLValidatorTests {
 }
