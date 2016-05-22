@@ -88,7 +88,7 @@ class XtxtUMLExpressionValidator extends XtxtUMLTypeValidator {
 		}
 
 		if (container == null || container.isReachableFromInitialState(newHashSet, true)) {
-			error("'trigger' cannot be used here, as its container is directly reachable from the initial state",
+			error("'trigger' cannot be used here",
 				sigExpr, XU_SIGNAL_ACCESS_EXPRESSION__TRIGGER, INVALID_SIGNAL_ACCESS);
 		}
 	}
@@ -142,7 +142,7 @@ class XtxtUMLExpressionValidator extends XtxtUMLTypeValidator {
 	}
 
 	@Check
-	def checkOwnerOfAccessedClassProperty(XUClassPropertyAccessExpression propAccessExpr) {
+	def checkClassPropertyIsAccessible(XUClassPropertyAccessExpression propAccessExpr) {
 		if (propAccessExpr.right == null) {
 			return;
 		}
