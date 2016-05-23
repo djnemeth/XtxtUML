@@ -16,6 +16,7 @@ import static hu.elte.txtuml.xtxtuml.xtxtUML.XtxtUMLPackage.Literals.*
 @RunWith(XtextRunner)
 @InjectWith(XtxtUMLInjectorProvider)
 class XtxtUMLClassValidatorTest {
+
 	@Inject extension ParseHelper<XUFile>;
 	@Inject extension ValidationTestHelper;
 

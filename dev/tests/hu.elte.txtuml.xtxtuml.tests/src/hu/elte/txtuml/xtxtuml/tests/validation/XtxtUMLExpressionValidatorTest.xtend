@@ -92,7 +92,7 @@ class XtxtUMLExpressionValidatorTest {
 	}
 
 	@Test
-	def checkXtxtUMLExplicitOperationCall() {
+	def checkExplicitOperationCall() {
 		'''
 			package test.model;
 			class A {
