@@ -64,7 +64,7 @@ class XtxtUMLReferenceProposalCreator extends XbaseReferenceProposalCreator {
 	@Inject CommonTypeComputationServices services;
 
 	/**
-	 * Provides a scope with a customized JDT based scope.
+	 * Provides a scope with a customized JDT based superscope.
 	 * @see XtxtUMLReferenceProposalTypeScope
 	 */
 	override getScopeProvider() {

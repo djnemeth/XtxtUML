@@ -269,9 +269,9 @@ class XtxtUMLFormatter extends XbaseFormatter {
 	 * Can be used to format a block element according to the following format:
 	 * <pre>
 	 *     «typeKeyword» «name» {
-	 *         «elements»
+	 *         «members»
 	 *     }
-	 * </pre>, if elements is not empty, and
+	 * </pre>if members is not empty and
 	 * <pre>
 	 *     «typeKeyword» «name» {}
 	 * </pre> otherwise. The parameter isSpacious indicates whether empty lines

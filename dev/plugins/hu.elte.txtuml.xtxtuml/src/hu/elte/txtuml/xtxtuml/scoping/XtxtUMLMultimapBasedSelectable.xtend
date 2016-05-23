@@ -40,4 +40,5 @@ class XtxtUMLMultimapBasedSelectable extends MultimapBasedSelectable {
 
 		return result;
 	}
+
 }

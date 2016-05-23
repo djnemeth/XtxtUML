@@ -7,7 +7,7 @@ import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
 class XtxtUMLXImportSectionNamespaceScopeProvider extends XImportSectionNamespaceScopeProvider {
 
 	/**
-	 * Override the default behavior to <b>not</b> include
+	 * Overrides the default behavior to <b>not</b> include
 	 * the Xbase library.
 	 */
 	override protected getImplicitImports(boolean ignoreCase) {

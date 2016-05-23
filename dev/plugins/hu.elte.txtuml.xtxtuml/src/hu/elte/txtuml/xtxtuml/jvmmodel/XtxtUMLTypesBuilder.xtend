@@ -23,4 +23,5 @@ class XtxtUMLTypesBuilder extends JvmTypesBuilder {
 		copyDocumentationTo(sourceElement, result)
 		associate(sourceElement, result)
 	}
+
 }

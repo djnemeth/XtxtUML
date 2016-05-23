@@ -62,7 +62,7 @@ class XtxtUMLHighlightingCalculator extends XbaseHighlightingCalculator {
 
 	/**
 	 * Doesn't highlight extension calls.
-	 * Highlight formal parameters according to the defaults of Eclipse.
+	 * Highlights formal parameters according to the defaults of Eclipse.
 	 */
 	override computeFeatureCallHighlighting(XAbstractFeatureCall featureCall, IHighlightedPositionAcceptor acceptor) {
 		if (featureCall.isExtension) {

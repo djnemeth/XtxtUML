@@ -23,4 +23,5 @@ class XtxtUMLModelPackageInfoAdapter extends AdapterImpl {
 	override isAdapterForType(Object type) {
 		XtxtUMLModelPackageInfoAdapter == type
 	}
+
 }

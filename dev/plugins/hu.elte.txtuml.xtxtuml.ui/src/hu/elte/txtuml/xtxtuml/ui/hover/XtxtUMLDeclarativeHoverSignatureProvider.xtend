@@ -11,14 +11,14 @@ class XtxtUMLDeclarativeHoverSignatureProvider extends XbaseDeclarativeHoverSign
 	@Inject XtxtUMLLabelProvider labelProvider;
 
 	/**
-	 * Overrides the default to provide Java-like operation signatures.
+	 * Overrides the default implementation to provide Java-like operation signatures.
 	 */
 	override getSignature(EObject obj) {
 		if(obj instanceof XUOperation) labelProvider.text(obj, true).toString else labelProvider.getText(obj)
 	}
 
 	/** 
-	 * Overrides the default to use simple signatures.
+	 * Overrides the default implementation to use simple signatures.
 	 */
 	override getDerivedOrSourceSignature(EObject obj) {
 		getSignature(obj);

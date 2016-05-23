@@ -60,7 +60,7 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
 
 /**
- * This class can be used to infer a JVMModel equivalent from
+ * This class can be used to infer a JVM model equivalent from
  * an XtxtUML resource. If not stated otherwise, the infer
  * methods map XtxtUML entities to corresponding JtxtUML ones.
  */

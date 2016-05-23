@@ -44,7 +44,7 @@ class XtxtUMLLabelProvider extends XbaseLabelProvider {
 
 	/**
 	 * @returns <code>null</code>
-	 * customized is icon is used instead.
+	 * (customized icon is used instead, see image(JvmGenericType))
 	 */
 	override protected dispatch imageDescriptor(JvmGenericType genericType) {
 		null
