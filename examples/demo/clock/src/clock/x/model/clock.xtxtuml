@@ -32,11 +32,11 @@ class Clock {
 		connect(SecondValues.secondHand, secondHand->(Hand.ValuePort),
 				SecondValues.face, display->(Display.SecondPort));
 
-		start(pendulum);
-		start(secondHand);
-		start(minuteHand);
-		start(hourHand);
-		start(display);
+		start pendulum;
+		start secondHand;
+		start minuteHand;
+		start hourHand;
+		start display;
 	}
 
 }
@@ -66,7 +66,7 @@ class Display {
 	}
 
 	private void refresh() {
-		log("" + hour + ":" + minute + ":" + second);
+		log "" + hour + ":" + minute + ":" + second;
 	}
 
 	initial Init;
@@ -191,7 +191,7 @@ class Pendulum {
 		from Init;
 		to Working;
 		effect {
-			timerHandle = Timer.start(this, new Tick(), unit);
+			timerHandle = Timer.^start(this, new Tick(), unit);
 		}
 	}
 

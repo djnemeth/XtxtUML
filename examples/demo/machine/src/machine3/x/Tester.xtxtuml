@@ -34,7 +34,7 @@ execution Tester {
 	// association end is non-navigable in that model.
 	send new DoYourWork() to oneOfTheUsers;
 
-	Timer.start(oneOfTheUsers, new DoYourWork(), 5000);
+	Timer.^start(oneOfTheUsers, new DoYourWork(), 5000);
 
 	Timer.shutdown();
 }

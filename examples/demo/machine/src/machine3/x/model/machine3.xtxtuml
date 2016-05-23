@@ -16,33 +16,33 @@ class Machine {
 
 	state Off {
 		entry {
-			log("\tMachine enters state: 'off'");
+			log "\tMachine enters state: 'off'";
 		}
 
 		exit {
-			log("\tMachine exits state: 'off'");
+			log "\tMachine exits state: 'off'";
 		}
 	}
 
 	composite On {
 		entry {
-			log("\tMachine enters state: 'on'");
+			log "\tMachine enters state: 'on'";
 		}
 
 		exit {
-			log("\tMachine exits state: 'on'");
+			log "\tMachine exits state: 'on'";
 		}
 
 		initial Init;
 
 		state Active {
 			entry {
-				log("\tMachine enters state: 'active'");
-				log("\tMachine: tasks to do: " + Machine.this.tasksToDo);
+				log "\tMachine enters state: 'active'";
+				log "\tMachine: tasks to do: " + tasksToDo;
 			}
 
 			exit {
-				log("\tMachine exits state: 'active'");
+				log "\tMachine exits state: 'active'";
 			}
 		}
 		
@@ -58,11 +58,11 @@ class Machine {
 
 			effect {
 				DoTasks doTasks = trigger;
-				Machine.this.tasksToDo -= doTasks.count;
-				log("\tMachine: becoming active...");
+				tasksToDo -= doTasks.count;
+				log "\tMachine: becoming active...";
 			}
 			
-			guard(Machine.this.tasksToDo > 0);
+			guard ( tasksToDo > 0 );
 		}
 		
 	}
@@ -71,7 +71,7 @@ class Machine {
 		from Init;
 		to Off;
 		effect {
-			log("\tMachine: initializing...");
+			log "\tMachine: initializing...";
 		}
 	}
 
@@ -81,7 +81,7 @@ class Machine {
 		trigger ButtonPress;
 
 		effect {
-			log("\tMachine: switching on...");
+			log "\tMachine: switching on...";
 		}
 	}
 
@@ -91,10 +91,10 @@ class Machine {
 		trigger ButtonPress;
 		
 		effect {
-			log("\tMachine: switching off...");
+			log "\tMachine: switching off...";
 		}
 
-		guard(Machine.this.tasksToDo <= 0);
+		guard ( tasksToDo <= 0 );
 	}
 }
 
@@ -105,7 +105,7 @@ class User {
 	int workToDo;
 
 	User() {
-		this.workToDo = 7;
+		workToDo = 7;
 	}
 
 	initial Init;
@@ -116,7 +116,7 @@ class User {
 		from Init;
 		to NotWorking;
 		effect {
-			log("\t" + name.toString() + ": initializing...");				
+			log "\t" + name.toString() + ": initializing...";				
 		}
 	}
 
@@ -129,20 +129,20 @@ class User {
 	transition NoWork {
 		from WhereToGo;
 		to NotWorking;
-		guard (workToDo == 0);
+		guard ( workToDo == 0 );
 
 		effect {
-			log("\t" + name.toString() + ": I have no work to do!");
+			log "\t" + name.toString() + ": I have no work to do!";
 		}
 	}
 
 	transition HasWork  {
 		from WhereToGo;
 		to NotWorking;
-		guard(workToDo != 0);
+		guard ( workToDo != 0 );
 
 		effect {
-			log("\t" + name.toString() + ": I am doing my work now...");
+			log "\t" + name.toString() + ": I am doing my work now...";
 			doWork();
 		}
 	}
@@ -220,7 +220,7 @@ class User {
 		
 		send new DoTasks(workToDo) to myMachine;
 
-		Timer.start(myMachine, new ButtonPress(), 2000);
+		Timer.^start(myMachine, new ButtonPress(), 2000);
 		// Switching off the machine with some delay.
 		
 		log("\t" + name.toString() + ": work finished...");
