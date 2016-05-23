@@ -1,4 +1,4 @@
-package hu.elte.txtuml.xtxtuml.typesystem
+package hu.elte.txtuml.xtxtuml.typesystem;
 
 import com.google.common.collect.ImmutableMap
 import hu.elte.txtuml.api.model.ModelClass
@@ -12,6 +12,10 @@ import org.eclipse.xtext.xbase.typesystem.references.ITypeReferenceOwner
 
 class XtxtUMLReentrantTypeResolver extends LogicalContainerAwareReentrantTypeResolver {
 
+	/**
+	 * Overrides the default implementation to change references <code>this</code> and <code>super</code>
+	 * such that they refer to the enclosing XtxtUML <i>class</i> instance and its super respectively.
+	 */
 	override protected IFeatureScopeSession addThisAndSuper(IFeatureScopeSession session, ITypeReferenceOwner owner,
 		JvmDeclaredType thisType, /* @Nullable */ JvmTypeReference superType, boolean addNestedTypes) {
 		var childSession = session;

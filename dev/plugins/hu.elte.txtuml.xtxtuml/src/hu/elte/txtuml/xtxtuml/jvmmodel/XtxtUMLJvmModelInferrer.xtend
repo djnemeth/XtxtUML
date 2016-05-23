@@ -1,4 +1,4 @@
-package hu.elte.txtuml.xtxtuml.jvmmodel
+package hu.elte.txtuml.xtxtuml.jvmmodel;
 
 import com.google.inject.Inject
 import hu.elte.txtuml.api.model.Association
@@ -59,18 +59,31 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
 
+/**
+ * This class can be used to infer a JVMModel equivalent from
+ * an XtxtUML resource. If not stated otherwise, the infer
+ * methods map XtxtUML entities to corresponding JtxtUML ones.
+ */
 class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 
 	Map<EObject, JvmDeclaredType> registeredTypes = newHashMap;
 
-	@Inject extension XtxtUMLTypesBuilder
-	@Inject extension IJvmModelAssociations
-	@Inject extension IQualifiedNameProvider
+	@Inject extension XtxtUMLTypesBuilder;
+	@Inject extension IJvmModelAssociations;
+	@Inject extension IQualifiedNameProvider;
 
+	/**
+	 * Infers the given model declaration as a specialized JvmGenericType,
+	 * which will be generated to a package-info.java file later.
+	 */
 	def dispatch void infer(XUModelDeclaration decl, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(decl.toPackageInfo(decl.fullyQualifiedName, decl.modelName))
 	}
 
+	/**
+	 * Infers the given execution as a class, containing a conventional
+	 * main method.
+	 */
 	def dispatch void infer(XUExecution exec, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(exec.toClass(exec.fullyQualifiedName)) [
 			documentation = exec.documentation
@@ -142,7 +155,7 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 			for (member : tUClass.members) {
 				if (member instanceof XUState || member instanceof XUPort) {
 					members += member.inferredType as JvmMember
-				} else if (!(member instanceof XUDeclarationPrefix)) { // TODO refactor grammar
+				} else if (!(member instanceof XUDeclarationPrefix)) {
 					members += member.toJvmMember
 				}
 			}
@@ -187,6 +200,9 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
+	/** 
+	 * @see register(IJvmDeclaredTypeAcceptor,EObject,JvmGenericType,(JvmGenericType)=>void)
+	 */
 	def private dispatch void register(XUAssociationEnd assocEnd, IJvmDeclaredTypeAcceptor acceptor,
 		boolean isPreIndexingPhase) {
 		acceptor.register(assocEnd, assocEnd.toClass(assocEnd.fullyQualifiedName)) [
@@ -205,6 +221,9 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
+	/** 
+	 * @see register(IJvmDeclaredTypeAcceptor,EObject,JvmGenericType,(JvmGenericType)=>void)
+	 */
 	def private dispatch void register(XUPort port, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.register(port, port.toClass(port.fullyQualifiedName)) [
 			documentation = port.documentation
@@ -221,6 +240,9 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
+	/** 
+	 * @see register(IJvmDeclaredTypeAcceptor,EObject,JvmGenericType,(JvmGenericType)=>void)
+	 */
 	def private dispatch void register(XUState state, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.register(state, state.toClass(state.fullyQualifiedName)) [
 			documentation = state.documentation
@@ -247,6 +269,9 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 
+	/** 
+	 * @see register(IJvmDeclaredTypeAcceptor,EObject,JvmGenericType,(JvmGenericType)=>void)
+	 */
 	def private dispatch void register(XUConnectorEnd connEnd, IJvmDeclaredTypeAcceptor acceptor,
 		boolean isPreIndexingPhase) {
 		acceptor.register(connEnd, connEnd.toClass(connEnd.fullyQualifiedName)) [
@@ -399,6 +424,9 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
+	/**
+	 * Creates a type reference for the given annotation type with the given parameters.
+	 */
 	def private createAnnotationRef(Class<?> annotationType, Pair<String, EObject>... params) {
 		annotationRef(annotationType) => [ annotationRef |
 			for (param : params) {
@@ -473,6 +501,12 @@ class XtxtUMLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 
+	/**
+	 * Associates the given type with the given sourceElement, and also
+	 * registers the given initializer function, which will be used after the JVM inference
+	 * process is complete. This method does not add the given type to the contents of the resource.
+	 * @see <a href="https://github.com/ELTE-Soft/txtUML/issues/173#issuecomment-206116066">#173</a>
+	 */
 	def private void register(IJvmDeclaredTypeAcceptor acceptor, EObject sourceElement, JvmGenericType type,
 		(JvmGenericType)=>void initializer) {
 		registeredTypes.put(sourceElement, type)

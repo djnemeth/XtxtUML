@@ -79,16 +79,10 @@ XUConnectorEnd :
 
 // Signal- and Class-related
 
-/*
- * TODO replace with general XUAttribute
- */
 XUSignalAttribute :
 	visibility=XUVisibility? type=JvmTypeReference name=ValidID ';'
 ;
 
-/*
- * TODO left-factoring is no longer necessary
- */
 XUClassMember
 	: XUConstructor
 	| XUDeclarationPrefix (
@@ -102,7 +96,7 @@ XUClassMember
 	| XUPort
 ;
 
-/*
+/**
  * The inferred EClass is used in XUClassPropertyAccessExpression.
  */
 XUClassProperty :
@@ -306,6 +300,7 @@ XLiteral returns xbase::XExpression
  *         Added:
  *         <ul>
  *             <li>XParenthesizedRAlfExpression</li>
+ *             <li>XUSignalAccessExpression</li>
  *         </ul>
  *     </li>
  * </ul>
@@ -351,7 +346,6 @@ XBlockExpression returns xbase::XExpression :
 /* 
  * Changes:
  * <ul>
- *     <li>predicate is an XExpression instead of XExpression</li>
  *     <li>body is an XBlockExpression instead of XExpression</li>
  * </ul>
  */
@@ -364,7 +358,6 @@ XWhileExpression returns xbase::XExpression :
 /* 
  * Changes:
  * <ul>
- *     <li>predicate is an XExpression instead of XExpression</li>
  *     <li>body is an XBlockExpression instead of XExpression</li>
  * </ul>
  */
@@ -380,7 +373,6 @@ XDoWhileExpression returns xbase::XExpression :
  * <ul>
  *     <li>no closures after parentheses</li>
  *     <li>no type parameters</li>
- *     <li>XExpression -> XExpression</li>
  * </ul>
  */
 XFeatureCall returns xbase::XExpression :
@@ -397,7 +389,6 @@ XFeatureCall returns xbase::XExpression :
  * Changes:
  * <ul>
  *     <li>XBlockExpression is mandatory, except for an "else if" construct</li>
- *     <li>XExpression -> XExpression</li>
  * </ul>
  */
 XIfExpression returns xbase::XExpression :
@@ -412,7 +403,6 @@ XIfExpression returns xbase::XExpression :
  * <ul>
  *     <li>JvmFormalParameter -> FullJvmFormalParameter (type is mandatory)</li>
  *     <li>XBlockExpression is mandatory</li>
- *     <li>XExpression -> XExpression</li>
  * </ul>
  */
 XForLoopExpression returns xbase::XExpression :
@@ -426,7 +416,6 @@ XForLoopExpression returns xbase::XExpression :
  * <ul>
  *     <li>no variable declaration allowed</li>
  *     <li>parentheses are mandatory</li>
- *     <li>XExpression -> XExpression</li>
  *     <li>default has to be a block</li>
  * </ul>
  */
@@ -442,7 +431,6 @@ XSwitchExpression returns xbase::XExpression :
  * Changes:
  * <ul>
  *     <li>removed type guards (thus 'case' is mandatory)</li>
- *     <li>XExpression -> XExpression</li>
  *     <li>then attribute can only be a block</li>
  * </ul>
  */
@@ -489,12 +477,6 @@ XOtherOperatorExpression returns xbase::XExpression :
 	XAdditiveExpression
 ;
 
-/*
- * Changes:
- * <ul>
- *     <li>XExpression -> XExpression</li>
- * </ul>
- */
 XReturnExpression returns xbase::XExpression :
 	{xbase::XReturnExpression}
 	'return' (->expression=XExpression)?
@@ -506,7 +488,7 @@ XReturnExpression returns xbase::XExpression :
  *     <li>no nullsafe feature call keyword</li>
  *     <li>no type arguments for features</li>
  *     <li>no closure after parenthesis</li>
- *     <li>XExpression -> XExpression in call arguments</li>
+ *     <li>added class property access expression</li>
  * </ul>
  */
 XMemberFeatureCall returns xbase::XExpression :

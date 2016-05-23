@@ -12,6 +12,11 @@ class XtxtUMLMultimapBasedSelectable extends MultimapBasedSelectable {
 		super(allDescriptions);
 	}
 
+	/**
+	 * Implements a specialized cross-reference resolution method to
+	 * include all possible JVM equivalents matching the given reference.
+	 * @see <a href="https://github.com/ELTE-Soft/txtUML/pull/89">#89</a>
+	 */
 	override getExportedObjects(EClass type, QualifiedName name, boolean ignoreCase) {
 		var result = super.getExportedObjects(type, name, ignoreCase);
 

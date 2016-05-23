@@ -178,9 +178,6 @@ class XtxtUMLExpressionValidator extends XtxtUMLTypeValidator {
 		}
 	}
 
-	/*
-	 * TODO modify ExtensionScopeHelper
-	 */
 	def private doCheckNoExplicitExtensionCall(XAbstractFeatureCall featureCall) {
 		if (featureCall.isExtension) {
 			val actualArgs = featureCall.
@@ -214,6 +211,10 @@ class XtxtUMLExpressionValidator extends XtxtUMLTypeValidator {
 			isReachableFromInitialState(from, visitedStates, throughPseudostatesOnly);
 	}
 
+	/**
+	 * @param throughPseudostatesOnly whether only pseudostates should be considered during
+	 * computing if the given state is reachable from the enclosing statemachine's initial state
+	 */
 	def protected dispatch boolean isReachableFromInitialState(XUState state, HashSet<XUState> visitedStates,
 		boolean throughPseudostatesOnly) {
 		if (state.type == XUStateType.INITIAL) {
@@ -231,6 +232,9 @@ class XtxtUMLExpressionValidator extends XtxtUMLTypeValidator {
 		];
 	}
 
+	/**
+	 * Extends the default behavior to XtxtUML expressions.
+	 */
 	override protected isValueExpectedRecursive(XExpression expr) {
 		val container = expr.eContainer;
 		return switch (container) {

@@ -11,6 +11,9 @@ import org.eclipse.xtext.xbase.util.XExpressionHelper
 
 class XtxtUMLExpressionHelper extends XExpressionHelper {
 
+	/**
+	 * Extends the default behavior to XtxtUML expressions.
+	 */
 	public override hasSideEffects(XExpression expr) {
 		switch (expr) {
 			XUStartObjectExpression,

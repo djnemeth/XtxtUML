@@ -1,4 +1,4 @@
-package hu.elte.txtuml.xtxtuml.common
+package hu.elte.txtuml.xtxtuml.common;
 
 import com.google.inject.Inject
 import org.eclipse.xtext.resource.IEObjectDescription
@@ -8,6 +8,10 @@ public class XtxtUMLUtils {
 
 	@Inject IResourceDescriptions index;
 
+	/**
+	 * Returns the IEObjectDescription of the specified objectDescriptions's
+	 * container, if exists. Returns <code>null</code> otherwise. 
+	 */
 	def getEContainerDescription(IEObjectDescription objectDescription) {
 		val objectUriFragment = objectDescription.EObjectURI.fragment;
 		val containerUriFragment = objectUriFragment.substring(0, objectUriFragment.lastIndexOf('/'));

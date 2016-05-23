@@ -1,4 +1,4 @@
-package hu.elte.txtuml.xtxtuml.typesystem
+package hu.elte.txtuml.xtxtuml.typesystem;
 
 import com.google.inject.Inject
 import hu.elte.txtuml.api.model.Collection
@@ -73,6 +73,11 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 		}
 	}
 
+	/**
+	 * Tries to acquire the associated JVM element of the given source elements,
+	 * considering the resource set of the given ITypeComputationState. Fallbacktype
+	 * is used if none has been found.
+	 */
 	def private nullSafeJvmElementTypeRef(ITypeComputationState state, EObject sourceElement, Class<?> fallbackType) {
 		val inferredType = sourceElement.getPrimaryJvmElement as JvmType;
 		return if (inferredType != null) {
@@ -135,6 +140,10 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 		state.acceptActualType(type);
 	}
 
+	/**
+	 * Can be used to compute the common signal supertype
+	 * accessible from the given transition's effect.
+	 */
 	def private LightweightTypeReference getCommonSignalSuperType(
 		XUTransition trans,
 		ITypeComputationState cState,
@@ -159,6 +168,11 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 		return getTypeForName(Signal, cState);
 	}
 
+	/**
+	 * Can be used to compute the common signal supertype
+	 * accessible from the given state's entry or exit activity.
+	 * @param toState indicates whether the entry activity should be considered instead of the exit one
+	 */
 	def private LightweightTypeReference getCommonSignalSuperType(
 		XUState state,
 		ITypeComputationState cState,
@@ -217,6 +231,11 @@ class XtxtUMLTypeComputer extends XbaseWithAnnotationsTypeComputer {
 		state.withoutRootExpectation.computeTypes(sendExpr.target);
 	}
 
+	/**
+	 * Overrides the default implementation such that it doesn't delegate child expression
+	 * types to their containing block expression. Instead, the given block's type will
+	 * be accepted as <code>void</code>.
+	 */
 	override dispatch computeTypes(XBlockExpression block, ITypeComputationState state) {
 		val children = block.expressions;
 		if (!children.isEmpty) {

@@ -65,10 +65,6 @@ class XtxtUMLUniquenessValidator extends AbstractXtxtUMLValidator {
 		}
 	}
 
-	/*
-	 * TODO remove when general XUAttribute is introduced
-	 * TODO override local variable shadowing check defined in AbstractTypeComputationState
-	 */
 	@Check
 	def checkSignalAttributeNameIsUnique(XUSignalAttribute attribute) {
 		val containingSignal = attribute.eContainer as XUSignal;
@@ -257,6 +253,11 @@ class XtxtUMLUniquenessValidator extends AbstractXtxtUMLValidator {
 		parameters.map[parameterType?.type?.fullyQualifiedName]
 	}
 
+	/**
+	 * Returns the class qualified name of the given class member.
+	 * That is, the returned String will be the fully qualified name
+	 * of the enclosing class of the given member.
+	 */
 	def protected classQualifiedName(XUClassMember classMember) {
 		val fqnOfClass = EcoreUtil2.getContainerOfType(classMember, XUClass)?.fullyQualifiedName;
 		if (fqnOfClass != null) {
